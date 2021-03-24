@@ -1,0 +1,11 @@
+/www/node_modules/
+go_*
+.git*
+docker_*
+.dockerignore
+docker-compose*
+Docker*
+README.md
+Jenkins*
+.project
+.settings

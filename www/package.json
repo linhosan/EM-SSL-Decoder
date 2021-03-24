@@ -1,0 +1,25 @@
+{
+  "name": "@linhosan/em-ssl-decoder",
+  "version": "4.0.0",
+  "description": "Suite di Configuration Management",
+  "homepage": "https://bitbucket.org/LinhoSan/em-ssl-decoder/overview",
+  "bugs": {
+    "url": "https://bitbucket.org/LinhoSan/em-ssl-decoder/issues/"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node server.js -v"
+  },
+  "author": "LinhoSan <manuel.puricelli@gmail.com> (https://bitbucket.org/LinhoSan/)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "*",
+    "multer": "^1.4.1",
+    "replace-in-file": "^3.4.4",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "*"
+  },
+  "repository": "bitbucket:LinhoSan/em-ssl-decoder",
+  "devDependencies": {}
+}

@@ -1,0 +1,61 @@
+
+.modal {
+	overflow-y:auto;
+}
+
+table {
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+
+pre {
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	display: inline;
+}
+
+.text-wrap {
+	word-wrap: break-word; 
+}
+
+.col-custom-1 {
+  flex: 0 0 5.2%;
+  max-width: 5,2%;
+}
+
+
+.FGRosso{color:#e60000}a.FGRosso:focus,a.FGRosso:hover{color:#b30000}
+.FGVerde{color:#2eb82e}a.FGVerde:focus,a.FGVerde:hover{color:#248f24}
+.FGMarrone{color:#cc9900}a.FGMarrone:focus,a.FGMarrone:hover{color:#b38600}
+.FGGiallo{color:#ffff00}a.FGGiallo:focus,a.FGGiallo:hover{color:#e6e600}
+.FGBlu{color:#002080}a.FGBlu:focus,a.FGBlu:hover{color:#00134d}
+.FGBluChiaro{color:#0033cc}a.FGBluChiaro:focus,a.FGBluChiaro:hover{color:#002699}
+.FGAzzurro{color:#008fb3}a.FGAzzurro:focus,a.FGAzzurro:hover{color:#006680}
+.FGViola{color:#b30086}a.FGViola:focus,a.FGViola:hover{color:#800060}
+.FGFucsia{color:#ff00bf}a.FGFucsia:focus,a.FGFucsia:hover{color:#e600ac}
+/*.FGNero			--> text-dark */
+/*.FGGrigioScuro	--> text-secondary */
+/*.FGGrigioChiaro	--> text-muted */
+/*.FGRossoChiaro	--> text-danger */
+/*.FGVerdeChiaro	--> text-success */
+/*.FGAzzurroChiaro	--> text-primary */
+/*.FGBianco			--> text-white */
+
+
+
+textarea{  
+/*   height: 48px; */
+  display: block;
+  box-sizing: padding-box;
+  overflow: hidden;
+  line-height: 12px;
+  border-radius: 6px;
+}
+
+
+.navbar-success a {
+    color: #28a745;
+}

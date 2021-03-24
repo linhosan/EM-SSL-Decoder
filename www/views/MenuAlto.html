@@ -1,0 +1,328 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="col-2 navbar-brand">
+		<a href="#!/"><img src="img/logo-32.png" width="32" height="32" class="d-inline-block align-top"></a>
+		{{SUITE_NAME}}
+	</div>
+	<button class="navbar-toggler" 
+		type="button" 
+		data-toggle="collapse" 
+		data-target="#navbarTogglerDemo02" 
+		aria-controls="navbarTogglerDemo02" 
+		aria-expanded="false" 
+		aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	
+	
+	
+	
+	
+	
+	<div class="modal fade in"
+		ng-show="1==1"
+		id="Modal_CrtTextCode"
+		tabindex="-1"
+		aria-labelledby="Modal_CrtTextCode_Label"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			 <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="Modal_CrtTextCode_Label">Inserire Certificato Testuale (x509)</h5>
+				</div>
+				<div class="modal-body">
+					<textarea
+						rows="10"
+						class="form-control "
+						aria-label="crtTextCode" 
+						id="crtTextCode"
+						ng-model="$parent.$parent.crtTextCode"
+						placeholder="-----BEGIN CERTIFICATE REQUEST-----
+DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+-----END CERTIFICATE REQUEST-----" >
+					</textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="button"
+						data-dismiss="modal" 
+						class="btn btn-outline-primary"
+						ng-disabled="crtTextCode ==''"
+						ng-click="$parent.$parent.crtTextCode_First = true; crt_Decode();">Decodifica</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	
+	
+
+
+	
+	<div class="modal fade" id="ModalException" 
+	tabindex="-1" 
+	role="dialog" 
+	aria-hidden="true"
+	aria-labelledby="ModalException_Title">
+		<div 
+		class="modal-dialog modal-lg" 
+		role="document"
+		>
+			<div class="modal-content bg-dark text-light border-secondary">
+				<div class="modal-header ">
+					<h5 class="modal-title" id="ModalException_Title">Eccezioni</h5>
+					<button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body ">
+					<div id="accordion_Exception">
+						<div 
+							class="card mt-2 border-danger bg-dark"
+							ng-repeat="e in eccezioni">
+							<div class="card-header" 
+								id="header_{{$index}}_exception">
+								<h5 class="mb-0">
+									<button class="btn btn-block btn-outline-danger" 
+										style="white-space: normal !important;word-wrap: break-word !important;"
+										data-toggle="collapse" 
+										data-target="#collapse_{{$index}}_exception" 
+										aria-expanded="true" 
+										aria-controls="collapse_{{$index}}_exception">{{e.MESSAGE || 'N/A'}}
+									</button>
+								</h5>
+							</div>
+								
+							<div id="collapse_{{$index}}_exception" 
+								class="collapse " 
+								aria-labelledby="header_{{$index}}_exception" 
+								data-parent="#accordion_Exception">
+								<div class="card-body ">
+									<ul class="list-group list-group-flush">
+									  <li class="list-group-item bg-dark">
+									  	<h5 class="mb-1 text-danger">Funzione:</h5>
+      									<small>
+      										<pre class="text-light">{{e.FUNCTION || 'N/A'}}</pre>
+      									</small>
+      								  </li>
+									  <li class="list-group-item bg-dark">
+									  	<h5 class="mb-1 text-danger">Messaggio:</h5>
+      									<small>
+      										<pre class="text-light">{{e.MESSAGE || 'N/A'}}</pre>
+      									</small>
+      								  </li>
+									  <li class="list-group-item bg-dark">
+									  	<h5 class="mb-1 text-danger">Path:</h5>
+      									<small>
+      										<pre class="text-light">{{e.PATH || 'N/A'}}</pre>
+      									</small>
+      								  </li>
+									  <li class="list-group-item bg-dark">
+									  	<h5 class="mb-1 text-danger">Stack:</h5>
+      									<small>
+      										<pre class="text-light">{{e.STACK || 'N/A'}}</pre>
+      									</small>
+      								  </li>
+									</ul>
+								</div>
+								<div class="card m-2 text-danger border-danger bg-dark">
+									<div class="card-body">
+									<blockquote class="blockquote mb-0">
+										<footer class="blockquote-footer">{{e.CODE || 'N/A'}} ({{e.ERRNO || 'N/A'}})</footer>
+									</blockquote>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer text-light">
+					<button 
+						data-dismiss="modal" 
+						ng-show="eccezioni.length"
+						type="button" 
+						class="btn btn-danger btn-block" 
+						id="ModalException_Svuota_Btn" 
+						ng-click="cm_Exception_Svuota()">Svuota</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	<div class="modal fade" id="ModalAvvisi" 
+	tabindex="-1" 
+	role="dialog" 
+	aria-hidden="true"
+	aria-labelledby="ModalAvvisi_Title">
+		<div 
+		class="modal-dialog modal-lg" 
+		role="document"
+		>
+			<div class="modal-content   ">
+				<div class="modal-header ">
+					<h5 class="modal-title" id="ModalAvvisi_Title">Attenzione</h5>
+					<button type="button" class="close " data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body ">
+					<div id="accordion_Avvisi">
+						<div 
+							class="card  border-primary "
+							ng-repeat="aa in avvisi">
+							<div id="" 
+								aria-labelledby="header_{{$index}}_avvisi" 
+								data-parent="#accordion_Avvisi">
+								<div class="card-body ">
+									<ul class="list-group list-group-flush">
+									  <li class="list-group-item ">
+									  	<h5 class="mb-1 text-primary">{{aa.MESSAGE || 'N/A'}}</h5>
+      								  </li>
+									</ul>
+								</div>
+								<div class="card m-2  border-primary ">
+									<div class="card-body">{{aa.MESSAGE_EXTENDED || 'N/A'}}
+									<blockquote class="blockquote mb-0">
+										<footer class="blockquote-footer">Descrizione</footer>
+									</blockquote>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	<div class="modal fade" id="ModalError" 
+	tabindex="-1" 
+	role="dialog" 
+	aria-hidden="true"
+	aria-labelledby="ModalError_Title">
+		<div 
+		class="modal-dialog modal-lg" 
+		role="document"
+		>
+			<div class="modal-content bg-dark text-light border-secondary">
+				<div class="modal-header ">
+					<h5 class="modal-title" id="ModalError_Title">Errori</h5>
+					<button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body ">
+					<div id="accordion_Error">
+						<div 
+							class="card mt-2 border-danger bg-dark"
+							ng-repeat="ee in errori">
+							<div class="card-header" 
+								id="header_{{$index}}_error">
+								<h5 class="mb-0">
+									<button class="btn btn-block btn-outline-danger" 
+										style="white-space: normal !important;word-wrap: break-word !important;"
+										data-toggle="collapse" 
+										data-target="#collapse_{{$index}}_error" 
+										aria-expanded="true" 
+										aria-controls="collapse_{{$index}}_error">{{ee.MESSAGE || 'N/A'}}
+									</button>
+								</h5>
+							</div>
+								
+							<div id="collapse_{{$index}}_error" 
+								class="collapse " 
+								aria-labelledby="header_{{$index}}_error" 
+								data-parent="#accordion_Error">
+								<div class="card-body ">
+									<ul class="list-group list-group-flush">
+									  <li class="list-group-item bg-dark">
+									  	<h5 class="mb-1 text-danger">Funzione:</h5>
+      									<small>
+      										<pre class="text-light">{{ee.FUNCTION || 'N/A'}}</pre>
+      									</small>
+      								  </li>
+									  <li class="list-group-item bg-dark">
+									  	<h5 class="mb-1 text-danger">Messaggio:</h5>
+      									<small>
+      										<pre class="text-light">{{ee.MESSAGE || 'N/A'}}</pre>
+      									</small>
+      								  </li>
+									  <li class="list-group-item bg-dark">
+									  	<h5 class="mb-1 text-danger">Path:</h5>
+      									<small>
+      										<pre class="text-light">{{ee.PATH || 'N/A'}}</pre>
+      									</small>
+      								  </li>
+									  <li class="list-group-item bg-dark">
+									  	<h5 class="mb-1 text-danger">Stack:</h5>
+      									<small>
+      										<pre class="text-light">{{ee.STACK || 'N/A'}}</pre>
+      									</small>
+      								  </li>
+									</ul>
+								</div>
+								<div class="card m-2 text-danger border-danger bg-dark">
+									<div class="card-body">
+									<blockquote class="blockquote mb-0">
+										<footer class="blockquote-footer">{{ee.CODE || 'N/A'}} ({{ee.ERRNO || 'N/A'}})</footer>
+									</blockquote>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer text-light">
+					<button 
+						data-dismiss="modal" 
+						ng-show="errori.length"
+						type="button" 
+						class="btn btn-primary btn-block" 
+						id="ModalError_Svuota_Btn" 
+						ng-click="cm_Error_Svuota()">Svuota</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	
+
+	<div class="col-2 collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+			<div class="btn-group" role="group">
+				<a class="btn btn-primary"
+					role="button"
+					ng-class="{'active': current_Sezione === 'Certificati', 'btn-outline-primary': current_Sezione !== 'Certificati'}"
+					href="#!/Certificati">Certificati
+				</a>
+				<a class="btn btn-success" 
+					role="button"
+					ng-class="[
+								ListForDN.length ? 'disabled' : ''
+							  , {'active': current_Sezione === 'Chiavi', 'btn-outline-success': current_Sezione !== 'Chiavi'}
+							  ]"
+					href="#!/Chiavi">Chiavi
+				</a>
+			</div>
+		</ul>
+	</div>
+</nav>
