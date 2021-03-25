@@ -33,9 +33,9 @@
 					<textarea
 						rows="10"
 						class="form-control "
-						aria-label="crtTextCode" 
-						id="crtTextCode"
-						ng-model="$parent.$parent.crtTextCode"
+						aria-label="crtTextCode_INPUT" 
+						id="crtTextCode_INPUT"
+						ng-model="$parent.$parent.crtTextCode_INPUT"
 						placeholder="-----BEGIN CERTIFICATE REQUEST-----
 DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
 DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
@@ -52,8 +52,8 @@ DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
 					<button type="button"
 						data-dismiss="modal" 
 						class="btn btn-outline-primary"
-						ng-disabled="crtTextCode ==''"
-						ng-click="$parent.$parent.crtTextCode_First = true; crt_Decode();">Decodifica</button>
+						ng-disabled="crtTextCode_INPUT ==''"
+						ng-click="crt_Decode();">Decodifica</button>
 				</div>
 			</div>
 		</div>

@@ -21,6 +21,14 @@ app.controller('Certificati_Controller', ['$scope', '$route', '$rootScope', '$ro
 	
 	$rootScope.current_Sezione = 'Certificati';
 	console.log('Certificati_Controller (0)');
+	
+	
+	
+	
+	// Qua dentro ciò che va eseguito al termine del caricamento della pagina! ;-)
+	$scope.$on('$includeContentLoaded', function(event) {
+		$('#Modal_CrtTextCode').modal('show');
+	});
 }]);
 
 
@@ -61,15 +69,42 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 
 
 	$rootScope.crt_Decode = function() {
-		cm.emit('crt_Decode');
+	
+		$rootScope.crtTextCode_First = false; 
+		cm.emit('crt_Decode', $rootScope.crtTextCode_INPUT);
 		console.log("- emit() crt_Decode");
-		
-		$rootScope.crtTextCode_CN = 'afdsfa';
-		$rootScope.crtTextCode_Issuer = 'afddddsfa';
-		console.log('crtTextCode: ' + $rootScope.crtTextCode);
 	}
 	cm.on('crt_Decode_Return', function (data) {
 		console.log('- on() crt_Decode_Return');
+		console.log(data);
+		
+		$rootScope.crtTextCode_CN = data.CN;
+		$rootScope.crtTextCode_Issuer = data.Issuer;
+		$rootScope.crtTextCode_NotBefore = data.NotBefore;
+		$rootScope.crtTextCode_NotAfter = data.NotAfter;
+		$rootScope.crtTextCode_Is_CA = data.Is_CA;
+		
+		console.log('crtTextCode_CN: ' + $rootScope.crtTextCode_CN);
+		console.log('crtTextCode_Issuer: ' + $rootScope.crtTextCode_Issuer);
+		console.log('crtTextCode_NotBefore: ' + $rootScope.crtTextCode_NotBefore);
+		console.log('crtTextCode_NotAfter: ' + $rootScope.crtTextCode_NotAfter);
+		console.log('crtTextCode_Is_CA: ' + $rootScope.crtTextCode_Is_CA);
+		
+		$rootScope.crtTextCode_FileName;
+		
+		if ($rootScope.crtTextCode_Is_CA.toUpperCase() == 'TRUE')
+		{
+			if ($rootScope.crtTextCode_CN == $rootScope.crtTextCode_Issuer)
+				$rootScope.crtTextCode_FileName = 'Root__' + $rootScope.crtTextCode_CN + '__YYYYMMDD.crt';
+			else
+				$rootScope.crtTextCode_FileName = 'Intermediate_' + $rootScope.crtTextCode_CN + '__YYYYMMDD.crt';
+		} else {
+			$rootScope.crtTextCode_FileName = $rootScope.crtTextCode_CN + '__YYYYMMDD.crt';
+		}
+		
+		$rootScope.crtTextCode_FileName = $rootScope.crtTextCode_FileName.replaceAll(" ", "_");
+		console.log('crtTextCode_FileName: ' + $rootScope.crtTextCode_FileName);
+		
 	});	
 	$rootScope.crt_Decode_Modal = function() {
 
@@ -97,11 +132,7 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
         }
     };
 	
-	
 	$rootScope.copyValue = function(string) {
-		console.log('- copyValue');
-		console.log('  --> String:  ('+string+')');
-		
 		// ===================================
 		// Salvo il BRANCH nella Clipboard!
 		var aux = document.createElement("input");
@@ -112,11 +143,6 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		document.body.removeChild(aux);
 		// ===================================
 	}
-
-	
-	
-	
-	
 
 	$rootScope.cm_Exception_Svuota = function() {
 		console.log('- cm_Exception_Svuota');
@@ -155,10 +181,6 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		console.log(data);
 	});	
 	
-	
-	
-	
-
 	$rootScope.cm_Error_Svuota = function() {
 		console.log('- cm_Error_Svuota');
 		$rootScope.errori = []; 
@@ -187,10 +209,6 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		console.log(data);
 	});
 	
-	
-	
-	
-
 	$rootScope.cm_Avvisi_Svuota = function() {
 		console.log('- cm_Avvisi_Svuota');
 		$rootScope.avvisi = []; 
@@ -218,9 +236,6 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		
 		console.log(data);
 	});
-	
-	
-	
 });
 
 
@@ -229,10 +244,10 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 
 app.factory('cm', ['$rootScope', function ($rootScope) {
 	$rootScope.getGlobal_Returned = true;
-	$rootScope.crtTextCode = '';
+	$rootScope.crtTextCode_INPUT = '';
 	$rootScope.crtTextCode_CN = '';
 	$rootScope.crtTextCode_Issuer = '';
-	$rootScope.crtTextCode_First = false;
+	$rootScope.crtTextCode_First = true;
 
 	console.log('- Instanzio la Factory \"cm\"');
 	
@@ -565,15 +580,4 @@ app.directive('autoHeight', function() {
 
 // Sezione JQuery
 $(document)
-
-
 ;
-
-
-
-
-
-
-
-
-

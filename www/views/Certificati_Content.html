@@ -3,17 +3,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
 <!-- Contenuto -->
-<div class="card">
+<div class="card"
+	ng-show="! $parent.crtTextCode_First">
 	<div class="card-header">
 		Info Certificato
 	</div>
@@ -22,25 +14,77 @@
 			<input
 				type="text"
 				class="form-control"
-				placeholder="..."
+				placeholder="CN ..."
 				aria-label="CN"
 				ng-model="crtTextCode_CN"
 				disabled>
 			<div class="input-group-append">
-				<button class="btn btn-block btn-outline-primary" id="basic-addon1">CN</button>
+				<button 
+					class="btn btn-block btn-outline-primary" 
+					title="Clicca per copiare"
+					ng-click="copyValue( crtTextCode_CN ) ">CN</button>
 			</div>
 		</div>
 		<div class="input-group mb-1">
 			<input
 				type="text"
 				class="form-control"
-				placeholder="..."
+				placeholder="Issuer ..."
 				aria-label="Issuer"
 				ng-model="crtTextCode_Issuer"
 				disabled>
 			<div class="input-group-append">
-				<button class="btn btn-block btn-outline-primary" id="basic-addon1">Issuer</button>
+				<button 
+					class="btn btn-block btn-outline-primary" 
+					title="Clicca per copiare"
+					ng-click="copyValue( crtTextCode_Issuer ) ">Issuer</button>
+			</div>
+		</div>
+		<div class="input-group mb-1">
+			<input
+				type="text"
+				class="form-control"
+				placeholder="Not Before ..."
+				aria-label="Not Before"
+				ng-model="crtTextCode_NotBefore"
+				disabled>
+			<div class="input-group-append">
+				<button 
+					class="btn btn-block btn-outline-primary" 
+					title="Clicca per copiare"
+					ng-click="copyValue( crtTextCode_NotBefore ) ">Not Before</button>
+			</div>
+		</div>
+		<div class="input-group mb-3">
+			<input
+				type="text"
+				class="form-control"
+				placeholder="Not After ..."
+				aria-label="Not After"
+				ng-model="crtTextCode_NotAfter"
+				disabled>
+			<div class="input-group-append">
+				<button 
+					class="btn btn-block btn-outline-primary" 
+					title="Clicca per copiare"
+					ng-click="copyValue( crtTextCode_NotAfter ) ">Not After</button>
+			</div>
+		</div>
+		<div class="input-group mb-1">
+			<input
+				type="text"
+				class="form-control"
+				placeholder="File Name ..."
+				aria-label="File Name"
+				ng-model="crtTextCode_FileName"
+				disabled>
+			<div class="input-group-append">
+				<button 
+					class="btn btn-block btn-outline-primary" 
+					title="Clicca per copiare"
+					ng-click="copyValue( crtTextCode_FileName ) ">File Name</button>
 			</div>
 		</div>
 	</div>
 </div>
+

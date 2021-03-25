@@ -64,7 +64,21 @@ function getGlobal(socket) {
 	
 	let g = { EMSSL_PORT: EMSSL_PORT, SUITE_NAME: SUITE_NAME, SUITE_AUTHOR: SUITE_AUTHOR, SUITE_AUTHOR_URL: SUITE_AUTHOR_URL };
 	_log('- socket.emit() getGlobal_Return');
+	_log(g);
 	socket.emit('getGlobal_Return', g);
+}
+function crt_Decode(socket, data) {	
+	// Esempio: {  "CN": "DigiCert Global Root CA",  "Issuer": "DigiCert Global Root CA",  "NotBefore": "10 Nov 2006",  "NotAfter": "10 Nov 2031",  "Is_CA": "TRUE"};
+
+	fs.writeFileSync('/tmp/dummy.crt', data, { mode: 0o755 });	
+	_log('crt_Decode writeFile: OK');
+		
+	const child = child_process.spawnSync(HOME + '/bin/getInfo', [ '/tmp/dummy.crt' ]);	
+	let ret = JSON.parse( child.stdout.toString() );
+	_log(JSON.stringify(ret));
+	
+	_log('- socket.emit() crt_Decode_Return');
+	socket.emit('crt_Decode_Return', ret);
 }
 
 
@@ -95,6 +109,11 @@ io.sockets.on('connection', function (socket) {
 	socket.on('getGlobal', function (data) {
 		_log('- socket.on() getGlobal');
 		getGlobal(socket)
+	});
+	socket.on('crt_Decode', function (data) {
+		_log('- socket.on() crt_Decode');
+		_log(data);
+		crt_Decode(socket, data)
 	});
 	
 });

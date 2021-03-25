@@ -14,6 +14,7 @@ RUN apt-get update \
 
 # EM SSL Decoder
 RUN echo ""                           >> /root/.profile
+RUN echo ". ~/.cm"                    >> /root/.profile
 RUN echo "alias ll=\"ls -la\""        >> /root/.profile
 COPY . /root/
 
@@ -21,6 +22,10 @@ COPY . /root/
 WORKDIR /root/www
 RUN npm install
 
-WORKDIR /root/
+# Permessi e Profile
+RUN chmod +x /root/bin/get*
+
+WORKDIR /root
+
 CMD [ "node", "www/server.js", "-v" ]
 EXPOSE 3000

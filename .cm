@@ -1,0 +1,5 @@
+function getInfo
+{
+  ${HOME}/bin/getInfo ${@}
+}
+export -f getInfo
