@@ -18,23 +18,34 @@ export IS_CA=
 
 if [[ $# -eq 1 ]]; then
 
-  CN=$(              openssl x509 -noout -in ${1} -subject   | awk -F"=" '{print $NF}' | xargs)
-  ISSUER=$(          openssl x509 -noout -in ${1} -issuer    | awk -F"=" '{print $NF}' | xargs)
+  openssl x509 -noout -in ${1} -text > /dev/null 2>&1
+  
+  if [ $? -eq 0 ]; then
 
-  NOTBEFORE_NOFORM=$(openssl x509 -noout -in ${1} -startdate | grep notBefore | awk -F"=" '{print $NF}' | xargs)
-  NOTAFTER_NOFORM=$( openssl x509 -noout -in ${1} -enddate   | grep notAfter | awk -F"=" '{print $NF}' | xargs)
-  NOTBEFORE=$(date -d "${NOTBEFORE_NOFORM}" +"%d %b %Y")
-  NOTAFTER=$( date -d "${NOTAFTER_NOFORM}"  +"%d %b %Y")
+    CN=$(              openssl x509 -noout -in ${1} -subject   | awk -F"=" '{print $NF}' | xargs)
+    ISSUER=$(          openssl x509 -noout -in ${1} -issuer    | awk -F"=" '{print $NF}' | xargs)
+
+    NOTBEFORE_NOFORM=$(openssl x509 -noout -in ${1} -startdate | grep notBefore | awk -F"=" '{print $NF}' | xargs)
+    NOTAFTER_NOFORM=$( openssl x509 -noout -in ${1} -enddate   | grep notAfter | awk -F"=" '{print $NF}' | xargs)
+    NOTBEFORE=$(date -d "${NOTBEFORE_NOFORM}" +"%d %b %Y")
+    NOTAFTER=$( date -d "${NOTAFTER_NOFORM}"  +"%d %b %Y")
   
-  IS_CA=$(           openssl x509 -noout -in ${1} -ext basicConstraints | grep "CA:" | awk -F"," '{print $1}'| awk -F":" '{print $NF}' | xargs)
+    IS_CA=$(           openssl x509 -noout -in ${1} -ext basicConstraints | grep "CA:" | awk -F"," '{print $1}'| awk -F":" '{print $NF}' | xargs)
   
-  echo -n "{"
-  echo -n "  \"CN\": \"${CN}\","
-  echo -n "  \"Issuer\": \"${ISSUER}\","
-  echo -n "  \"NotBefore\": \"${NOTBEFORE}\","
-  echo -n "  \"NotAfter\": \"${NOTAFTER}\","
-  echo -n "  \"Is_CA\": \"${IS_CA}\""
-  echo -n "}"
+    echo -n "OK: {"
+    echo -n "  \"CN\": \"${CN}\","
+    echo -n "  \"Issuer\": \"${ISSUER}\","
+    echo -n "  \"NotBefore\": \"${NOTBEFORE}\","
+    echo -n "  \"NotAfter\": \"${NOTAFTER}\","
+    echo -n "  \"Is_CA\": \"${IS_CA}\""
+    echo -e "}"
+  
+  else
+  
+    echo -e "Fail: Il formato del certificato non e' valido!"
+  
+  fi
+  
 else
-  echo "Usage: ${SCRIPT_NAME} <fileName.crt>"
+  echo -e "Usage: ${SCRIPT_NAME} <fileName.crt>"
 fi

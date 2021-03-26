@@ -31,20 +31,30 @@
 				</div>
 				<div class="modal-body">
 					<textarea
-						rows="10"
+						rows="21"
 						class="form-control "
-						aria-label="crtTextCode_INPUT" 
-						id="crtTextCode_INPUT"
-						ng-model="$parent.$parent.crtTextCode_INPUT"
+						aria-label="Modal_CrtTextCode_Input" 
+						id="Modal_CrtTextCode_Input"
+						ng-model="$parent.$parent.Modal_CrtTextCode_Input"
 						placeholder="-----BEGIN CERTIFICATE REQUEST-----
 DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+MMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDU
+YCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMM
+ERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYC
+TIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCER
+FICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTI
+CATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFI
+TEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICA
+ALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATE
+PHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEAL
+ANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPH
+UMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHAN
+ICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMER
+CODEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERIC
+DEDUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCO
 DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
-DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
-DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
-DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
-DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
-DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
-DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
+MMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDU
+YCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMM
 -----END CERTIFICATE REQUEST-----" >
 					</textarea>
 				</div>
@@ -52,7 +62,7 @@ DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
 					<button type="button"
 						data-dismiss="modal" 
 						class="btn btn-outline-primary"
-						ng-disabled="crtTextCode_INPUT ==''"
+						ng-disabled="Modal_CrtTextCode_Input ==''"
 						ng-click="crt_Decode();">Decodifica</button>
 				</div>
 			</div>
@@ -171,7 +181,7 @@ DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
 		>
 			<div class="modal-content   ">
 				<div class="modal-header ">
-					<h5 class="modal-title" id="ModalAvvisi_Title">Attenzione</h5>
+					<h5 class="modal-title" id="ModalAvvisi_Title">Avviso</h5>
 					<button type="button" class="close " data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -180,6 +190,7 @@ DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
 					<div id="accordion_Avvisi">
 						<div 
 							class="card  border-primary "
+							ng-class="!$last ? 'mb-3' : ''"
 							ng-repeat="aa in avvisi">
 							<div id="" 
 								aria-labelledby="header_{{$index}}_avvisi" 
@@ -192,15 +203,24 @@ DUMMYCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODE
 									</ul>
 								</div>
 								<div class="card m-2  border-primary ">
-									<div class="card-body">{{aa.MESSAGE_EXTENDED || 'N/A'}}
+									<div class="card-body">{{aa.STATUS || 'N/A'}}
 									<blockquote class="blockquote mb-0">
-										<footer class="blockquote-footer">Descrizione</footer>
+										<footer class="blockquote-footer">Status</footer>
 									</blockquote>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="modal-footer text-light">
+					<button 
+						data-dismiss="modal" 
+						ng-show="avvisi.length"
+						type="button" 
+						class="btn btn-danger btn-block" 
+						id="ModalAvvisi_Svuota_Btn" 
+						ng-click="cm_Avvisi_Svuota()">Svuota</button>
 				</div>
 			</div>
 		</div>

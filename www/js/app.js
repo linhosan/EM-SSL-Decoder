@@ -71,7 +71,7 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 	$rootScope.crt_Decode = function() {
 	
 		$rootScope.crtTextCode_First = false; 
-		cm.emit('crt_Decode', $rootScope.crtTextCode_INPUT);
+		cm.emit('crt_Decode', $rootScope.Modal_CrtTextCode_Input);
 		console.log("- emit() crt_Decode");
 	}
 	cm.on('crt_Decode_Return', function (data) {
@@ -104,6 +104,15 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		
 		$rootScope.crtTextCode_FileName = $rootScope.crtTextCode_FileName.replaceAll(" ", "_");
 		console.log('crtTextCode_FileName: ' + $rootScope.crtTextCode_FileName);
+		
+		$rootScope.crtTextCode_TOBE  = 'CN:     ' + $rootScope.crtTextCode_CN + '\n';
+		$rootScope.crtTextCode_TOBE += 'Issuer: ' + $rootScope.crtTextCode_Issuer + '\n';
+		$rootScope.crtTextCode_TOBE += 'From:   ' + $rootScope.crtTextCode_NotBefore + '\n';
+		$rootScope.crtTextCode_TOBE += 'To:     ' + $rootScope.crtTextCode_NotAfter + '\n';
+		$rootScope.crtTextCode_TOBE += '\n';
+		$rootScope.crtTextCode_TOBE += $rootScope.Modal_CrtTextCode_Input + '\n';
+		console.log('crtTextCode_TOBE: ');
+		console.log($rootScope.crtTextCode_TOBE);
 		
 	});	
 	$rootScope.crt_Decode_Modal = function() {
@@ -138,6 +147,18 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		var aux = document.createElement("input");
 		aux.setAttribute("value", string.trim());
 		document.body.appendChild(aux);
+		aux.select();
+		document.execCommand("copy");
+		document.body.removeChild(aux);
+		// ===================================
+	}
+	$rootScope.copyValueMultiline = function(string) {
+		// ===================================
+		// Salvo il BRANCH nella Clipboard!
+		var aux = document.createElement("textarea");
+		//aux.setAttribute("value", string.trim());
+		document.body.appendChild(aux);
+		aux.innerHTML = string.trim()
 		aux.select();
 		document.execCommand("copy");
 		document.body.removeChild(aux);
@@ -208,29 +229,25 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		
 		console.log(data);
 	});
-	
+		
 	$rootScope.cm_Avvisi_Svuota = function() {
 		console.log('- cm_Avvisi_Svuota');
 		$rootScope.avvisi = []; 
 	}
-	cm.on('cm_Error', function (data) {
+	cm.on('cm_Avvisi', function (data) {
 
-		console.log('- on() cm_Error 1');
-		console.log('            FUNCTION: ' + data.FUNCTION);
-		console.log('             MESSAGE: ' + data.MESSAGE);
-		console.log('             CODE: ' + data.CODE);
-		console.log('             ERRNO: ' + data.ERRNO);
-		console.log('             PATH: ' + data.PATH);
+		console.log('- on() cm_Avvisi');
+		console.log('         FUNCTION: ' + data.FUNCTION);
+		console.log('           STATUS: ' + data.STATUS);
+		console.log('          MESSAGE: ' + data.MESSAGE);
 		
-		$rootScope.errori.push({
+		$rootScope.avvisi.push({
 				FUNCTION: data.FUNCTION,
-				MESSAGE: data.MESSAGE,
-				CODE: data.CODE,
-				ERRNO: data.ERRNO,
-				PATH: data.PATH
+				  STATUS: data.STATUS,
+				 MESSAGE: data.MESSAGE
 			});
 		
-		$('#ModalError').modal({
+		$('#ModalAvvisi').modal({
 			keyboard: false
 		});
 		
@@ -244,7 +261,8 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 
 app.factory('cm', ['$rootScope', function ($rootScope) {
 	$rootScope.getGlobal_Returned = true;
-	$rootScope.crtTextCode_INPUT = '';
+	$rootScope.Modal_CrtTextCode_Input = '';
+	
 	$rootScope.crtTextCode_CN = '';
 	$rootScope.crtTextCode_Issuer = '';
 	$rootScope.crtTextCode_First = true;
@@ -580,4 +598,17 @@ app.directive('autoHeight', function() {
 
 // Sezione JQuery
 $(document)
+
+	.on('shown.bs.modal','#Modal_CrtTextCode', function () {
+		$("#Modal_CrtTextCode").find('#Modal_CrtTextCode_Input').focus().select();
+	})
 ;
+
+
+
+
+
+
+
+
+

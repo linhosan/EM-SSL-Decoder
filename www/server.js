@@ -67,18 +67,47 @@ function getGlobal(socket) {
 	_log(g);
 	socket.emit('getGlobal_Return', g);
 }
+
+
+
+
+
+
+
+
 function crt_Decode(socket, data) {	
 	// Esempio: {  "CN": "DigiCert Global Root CA",  "Issuer": "DigiCert Global Root CA",  "NotBefore": "10 Nov 2006",  "NotAfter": "10 Nov 2031",  "Is_CA": "TRUE"};
 
 	fs.writeFileSync('/tmp/dummy.crt', data, { mode: 0o755 });	
-	_log('crt_Decode writeFile: OK');
+	_log('crt_Decode => writeFileSync: OK');
 		
-	const child = child_process.spawnSync(HOME + '/bin/getInfo', [ '/tmp/dummy.crt' ]);	
-	let ret = JSON.parse( child.stdout.toString() );
-	_log(JSON.stringify(ret));
+	const child = child_process.spawnSync(HOME + '/bin/getInfo', [ '/tmp/dummy.crt' ]);
 	
-	_log('- socket.emit() crt_Decode_Return');
-	socket.emit('crt_Decode_Return', ret);
+	let cRet = child.stdout.toString().trim() ;
+	let cStatus  = cRet.substr( 0, cRet.indexOf(':') ).trim();
+	let cMessage = cRet.substr( cRet.indexOf(':') + 2 ).trim();
+	_log('crt_Decode => getInfo => cRet => ' + cRet);
+	_log('crt_Decode => getInfo => cStatus => ' + cStatus);
+	_log('crt_Decode => getInfo => cMessage => ' + cMessage);
+	
+	if (cStatus == 'Fail')
+	{
+		cm_Avvisi('crt_Decode => getInfo', cStatus, cMessage, socket);
+	}
+	else if (cStatus == 'OK')
+	{
+		try {
+			let ret = JSON.parse( cMessage );
+			_log('crt_Decode => JSON.parse: ');
+			_log(ret);
+			
+			socket.emit('crt_Decode_Return', ret);
+			_log('- socket.emit() crt_Decode_Return');
+			
+		} catch (err) {
+			cm_Exception('crt_Decode', err, socket);
+		}
+	}	
 }
 
 
@@ -172,4 +201,17 @@ function cm_Error(func, err, socket) {
 	console.log(`                              CODE: (${ret.CODE})`);
 	console.log(`                             ERRNO: (${ret.ERRNO})`);
 	console.log(`                              PATH: (${ret.PATH})`);
+}
+function cm_Avvisi(func, status, message, socket) {
+	
+	let ret = [];
+	ret = {	FUNCTION: func || '' ,
+			  STATUS: status || '' ,
+			 MESSAGE: message || ''
+		 	    };
+	
+	socket.emit('cm_Avvisi', ret);
+	console.log(`- socket.emit() cm_Avvisi: FUNCTION: (${ret.FUNCTION})`);
+	console.log(`                             STATUS: (${ret.STATUS})`);
+	console.log(`                            MESSAGE: (${ret.MESSAGE})`);
 }
