@@ -1,0 +1,101 @@
+<div class="row" style="background-image: url('/img/logo-512.png'); 	width: 512px; height: 512px;; position: absolute;top: 60px; left: 25%; opacity: 0.08;">
+</div>
+
+
+
+<!-- Info Certificato -->
+<div class="card mb-3"
+	ng-show="! $parent.crtTextCode_First">
+	<div class="card-header">
+		Info Certificato
+	</div>
+	<div class="card-body">
+		
+		
+		
+	  <div class="list-group"
+		ng-show="! $parent.crtTextCode_First">
+		  <div class="list-group-item list-group-item-action flex-column align-items-start"
+		  	ng-class="[
+						(crtTextCode_Is_CA == 'TRUE'  ) ? 'text-danger' : ''
+					  , (crtTextCode_Is_CA == 'FALSE' ) ? 'text-primary' : ''
+					  ]">
+		    <div class="d-flex w-100 justify-content-between">
+		      <h6 class="mb-1">{{crtTextCode_CN || 'CN ...'}}</h6>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_CN ) ">Clicca per copiare</a></small>
+		    </div>
+		    <small>CN</small>
+		  </div>
+		  <div class="list-group-item list-group-item-action flex-column align-items-start"
+		  	ng-class="[
+						(crtTextCode_Is_CA == 'TRUE' && ( crtTextCode_CN == crtTextCode_Issuer )) ? 'text-danger' : ''
+					  ]">
+		    <div class="d-flex w-100 justify-content-between">
+		      <h6 class="mb-1">{{crtTextCode_Issuer || 'Issuer ...'}}</h6>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_Issuer ) ">Clicca per copiare</a></small>
+		    </div>
+		    <small>Issuer</small>
+		  </div>
+		  <div class="list-group-item list-group-item-action flex-column align-items-start">
+		    <div class="d-flex w-100 justify-content-between">
+		      <h6 class="mb-1">{{crtTextCode_NotBefore || 'Not Before ...'}}</h6>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotBefore ) ">Clicca per copiare</a></small>
+		    </div>
+		    <small>Not Before</small>
+		  </div>
+		  <div class="list-group-item list-group-item-action flex-column align-items-start ">
+		    <div class="d-flex w-100 justify-content-between">
+		      <h6 class="mb-1">{{crtTextCode_NotAfter || 'Not After...'}}</h6>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotAfter ) ">Clicca per copiare</a></small>
+		    </div>
+		    <small>Not After</small>
+		  </div>  
+	  </div> 
+
+		<div class="form-check mt-3"
+			ng-show="crtTextCode_Is_CA == 'TRUE' && ( crtTextCode_CN == crtTextCode_Issuer )">
+		  <i class="fas fa-check-circle text-danger" id="flexCheckDisabled" aria-hidden="true"></i>
+		  <label class="form-check-label" for="flexCheckDisabled">
+		    CA Root
+		  </label>
+		</div>
+		<div class="form-check mt-3"
+			ng-show="crtTextCode_Is_CA == 'TRUE' && ( crtTextCode_CN != crtTextCode_Issuer )">
+		  <i class="fas fa-check-circle text-danger" id="flexCheckDisabled" aria-hidden="true"></i>
+		  <label class="form-check-label" for="flexCheckDisabled">
+		    CA Intermediate
+		  </label>
+		</div>
+		
+	  <div class="list-group-item list-group-item-action flex-column align-items-start mt-3">
+	    <div class="d-flex w-100 justify-content-between">
+	      <h6 class="mb-1">{{crtTextCode_FileName || 'File Name...'}}</h6>
+	      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_FileName ) ">Clicca per copiare</a></small>
+	    </div>
+	    <small>$ mv &#60;currentFileName.crt&#62; {{crtTextCode_FileName}}</small>
+	  </div>
+
+	</div> 
+</div> 
+
+
+
+
+<div class="card mb-5"
+	ng-show="! $parent.crtTextCode_First">
+	<div class="card-header">
+		Contenuto Desiderato (TOBE)
+	</div>
+		<div class="card-body">
+	      <div class="list-group">
+			  <div class="list-group-item list-group-item-action flex-column align-items-start ">
+			    <div class="d-flex w-100 justify-content-between">
+			      <h6 class="mb-1"><pre>{{$parent.$parent.crtTextCode_TOBE || '...'}}</pre></h6>
+			      <small><a href="javascript:void(0)" ng-click="copyValueMultiline( $parent.$parent.crtTextCode_TOBE ) ">Clicca per copiare</a></small>
+			    </div>
+			  </div>  
+		  </div>  
+	  </div> 
+</div>
+
+
