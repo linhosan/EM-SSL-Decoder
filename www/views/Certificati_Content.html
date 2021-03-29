@@ -22,7 +22,7 @@
 					  ]">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mb-1">{{crtTextCode_CN || 'CN ...'}}</h6>
-		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_CN ) ">Clicca per copiare</a></small>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_CN ) ">Copia CN</a></small>
 		    </div>
 		    <small>CN</small>
 		  </div>
@@ -32,21 +32,21 @@
 					  ]">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mb-1">{{crtTextCode_Issuer || 'Issuer ...'}}</h6>
-		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_Issuer ) ">Clicca per copiare</a></small>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_Issuer ) ">Copia Issuer</a></small>
 		    </div>
 		    <small>Issuer</small>
 		  </div>
 		  <div class="list-group-item list-group-item-action flex-column align-items-start">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mb-1">{{crtTextCode_NotBefore || 'Not Before ...'}}</h6>
-		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotBefore ) ">Clicca per copiare</a></small>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotBefore ) ">Copia Data</a></small>
 		    </div>
 		    <small>Not Before</small>
 		  </div>
 		  <div class="list-group-item list-group-item-action flex-column align-items-start ">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mb-1">{{crtTextCode_NotAfter || 'Not After...'}}</h6>
-		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotAfter ) ">Clicca per copiare</a></small>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotAfter ) ">Copia Data</a></small>
 		    </div>
 		    <small>Not After</small>
 		  </div>  
@@ -66,15 +66,6 @@
 		    CA Intermediate
 		  </label>
 		</div>
-		
-	  <div class="list-group-item list-group-item-action flex-column align-items-start mt-3">
-	    <div class="d-flex w-100 justify-content-between">
-	      <h6 class="mb-1">{{crtTextCode_FileName || 'File Name...'}}</h6>
-	      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_FileName ) ">Clicca per copiare</a></small>
-	    </div>
-	    <small>$ mv &#60;currentFileName.crt&#62; {{crtTextCode_FileName}}</small>
-	  </div>
-
 	</div> 
 </div> 
 
@@ -87,15 +78,38 @@
 		Contenuto Desiderato (TOBE)
 	</div>
 		<div class="card-body">
-	      <div class="list-group">
+		  
+		  
+	
+			<div class="list-group"
+			  ng-show="! $parent.crtTextCode_First">
 			  <div class="list-group-item list-group-item-action flex-column align-items-start ">
 			    <div class="d-flex w-100 justify-content-between">
+			      <h6 class="mb-1">{{crtTextCode_FileName || 'File Name...'}}</h6>
+			      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_FileName ) ">Copia File Name</a></small>
+			    </div>
+			    <small>File Name</small>
+			  </div>
+<!-- 			  <div class="list-group-item list-group-item-action flex-column align-items-start"> -->
+<!-- 			    <div class="d-flex w-100 justify-content-between"> -->
+<!-- 			      <h6 class="mb-1"><pre>$ mv &#60;currentFileName.crt&#62; {{crtTextCode_FileName || '...'}}</pre></h6> -->
+<!-- 			      <small><a href="javascript:void(0)" ng-click="copyValue( 'mv &#60;currentFileName.crt&#62; ' + crtTextCode_FileName ) ">Copia Comando di Rinomina</a></small> -->
+<!-- 			    </div> -->
+<!-- 			    <small>Comando di Rinomina</small> -->
+<!-- 			  </div> -->
+			</div> 
+			
+			
+	      <div class="list-group">
+			  <div class="list-group-item list-group-item-action flex-column align-items-start mt-3">
+			    <div class="d-flex w-100 justify-content-between">
 			      <h6 class="mb-1"><pre>{{$parent.$parent.crtTextCode_TOBE || '...'}}</pre></h6>
-			      <small><a href="javascript:void(0)" ng-click="copyValueMultiline( $parent.$parent.crtTextCode_TOBE ) ">Clicca per copiare</a></small>
+			      <small><a href="javascript:void(0)" ng-click="copyValueMultiline( $parent.$parent.crtTextCode_TOBE ) ">Copia Contenuto Desiderato</a></small>
 			    </div>
 			  </div>  
 		  </div>  
-	  </div> 
+			
+	    </div> 
 </div>
 
 

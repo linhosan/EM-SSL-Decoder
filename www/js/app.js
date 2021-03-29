@@ -90,19 +90,33 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		console.log('crtTextCode_NotAfter: ' + $rootScope.crtTextCode_NotAfter);
 		console.log('crtTextCode_Is_CA: ' + $rootScope.crtTextCode_Is_CA);
 		
-		$rootScope.crtTextCode_FileName;
+		$rootScope.crtTextCode_FileName = '';
 		
 		if ($rootScope.crtTextCode_Is_CA.toUpperCase() == 'TRUE')
 		{
 			if ($rootScope.crtTextCode_CN == $rootScope.crtTextCode_Issuer)
-				$rootScope.crtTextCode_FileName = 'Root__' + $rootScope.crtTextCode_CN + '__YYYYMMDD.crt';
+				$rootScope.crtTextCode_FileName += 'Root__' + $rootScope.crtTextCode_CN ;
 			else
-				$rootScope.crtTextCode_FileName = 'Intermediate_' + $rootScope.crtTextCode_CN + '__YYYYMMDD.crt';
+				$rootScope.crtTextCode_FileName += 'Intermediate__' + $rootScope.crtTextCode_CN ;
 		} else {
-			$rootScope.crtTextCode_FileName = $rootScope.crtTextCode_CN + '__YYYYMMDD.crt';
+			$rootScope.crtTextCode_FileName = $rootScope.crtTextCode_CN ;
 		}
 		
-		$rootScope.crtTextCode_FileName = $rootScope.crtTextCode_FileName.replaceAll(" ", "_");
+		$rootScope.crtTextCode_FileName = $rootScope.crtTextCode_FileName
+												.replaceAll(" ", "_")
+												.replaceAll("*", "asterisc");
+		
+		const d = new Date($rootScope.crtTextCode_NotAfter);
+		$rootScope.crtTextCode_NotAfter_Anno   =   d.getFullYear();
+		$rootScope.crtTextCode_NotAfter_Mese   = ( d.getMonth() + 1 ).toString().padStart(2, '0');
+		$rootScope.crtTextCode_NotAfter_Giorno =   d.getDate()       .toString().padStart(2, '0');
+		$rootScope.crtTextCode_FileName += '__' 
+											+ $rootScope.crtTextCode_NotAfter_Anno
+											+ $rootScope.crtTextCode_NotAfter_Mese
+											+ $rootScope.crtTextCode_NotAfter_Giorno
+											;
+		
+		$rootScope.crtTextCode_FileName += '.crt' ;
 		console.log('crtTextCode_FileName: ' + $rootScope.crtTextCode_FileName);
 		
 		$rootScope.crtTextCode_TOBE  = 'CN:     ' + $rootScope.crtTextCode_CN + '\n';
@@ -146,6 +160,8 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		// Salvo il BRANCH nella Clipboard!
 		var aux = document.createElement("input");
 		aux.setAttribute("value", string.trim());
+			console.log('- copyValue:');
+			console.log(string.trim());
 		document.body.appendChild(aux);
 		aux.select();
 		document.execCommand("copy");
@@ -159,6 +175,8 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		//aux.setAttribute("value", string.trim());
 		document.body.appendChild(aux);
 		aux.innerHTML = string.trim()
+			console.log('- copyValueMultiline:');
+			console.log(string.trim());
 		aux.select();
 		document.execCommand("copy");
 		document.body.removeChild(aux);
