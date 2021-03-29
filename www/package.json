@@ -2,9 +2,9 @@
   "name": "@linhosan/em-ssl-decoder",
   "version": "4.0.0",
   "description": "Suite di Configuration Management",
-  "homepage": "https://bitbucket.org/LinhoSan/em-ssl-decoder/overview",
+  "homepage": "https://bitbucket.org/LinhoSan/em-ssl-decoder",
   "bugs": {
-    "url": "https://bitbucket.org/LinhoSan/em-ssl-decoder/issues/"
+    "url": "https://bitbucket.org/LinhoSan/em-ssl-decoder/issues?status=new&status=open"
   },
   "main": "server.js",
   "scripts": {
