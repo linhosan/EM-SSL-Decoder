@@ -97,7 +97,7 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 			if ($rootScope.crtTextCode_CN == $rootScope.crtTextCode_Issuer)
 				$rootScope.crtTextCode_FileName += 'Root__' + $rootScope.crtTextCode_CN ;
 			else
-				$rootScope.crtTextCode_FileName += 'Intermediate_' + $rootScope.crtTextCode_CN ;
+				$rootScope.crtTextCode_FileName += 'Intermediate__' + $rootScope.crtTextCode_CN ;
 		} else {
 			$rootScope.crtTextCode_FileName = $rootScope.crtTextCode_CN ;
 		}
