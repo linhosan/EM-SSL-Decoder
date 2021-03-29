@@ -11,7 +11,7 @@
 			  ]"
 	ng-show="! $parent.crtTextCode_First">
 	<div class="card-header">
-		Info Certificato ({{ (crtTextCode_NotAfter_Expired == 'TRUE' ? 'Scaduto' : 'Valido' ) }})
+		Info Certificato{{ (crtTextCode_NotAfter_Expired == 'TRUE' ? ' (SCADUTO)' : '' ) }}
 	</div>
 	<div class="card-body">
 		
@@ -28,7 +28,7 @@
 		      <h6 class="mb-1">{{crtTextCode_CN || 'CN ...'}}</h6>
 		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_CN ) ">Copia CN</a></small>
 		    </div>
-		    <small>CN</small>
+		    <small>Canonical Name</small>
 		  </div>
 		  <div class="list-group-item list-group-item-action flex-column align-items-start"
 		  	ng-class="[
@@ -38,14 +38,14 @@
 		      <h6 class="mb-1">{{crtTextCode_Issuer || 'Issuer ...'}}</h6>
 		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_Issuer ) ">Copia Issuer</a></small>
 		    </div>
-		    <small>Issuer</small>
+		    <small>Rilasciato Da</small>
 		  </div>
 		  <div class="list-group-item list-group-item-action flex-column align-items-start">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mb-1">{{crtTextCode_NotBefore || 'Not Before ...'}}</h6>
-		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotBefore ) ">Copia Data</a></small>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotBefore ) ">Copia Decorrenza</a></small>
 		    </div>
-		    <small>Not Before</small>
+		    <small>Decorrenza</small>
 		  </div>
 		  <div class="list-group-item list-group-item-action flex-column align-items-start "
 		  	ng-class="[
@@ -53,22 +53,22 @@
 					  ]">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mb-1">{{crtTextCode_NotAfter || 'Not After...'}}</h6>
-		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotAfter ) ">Copia Data</a></small>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotAfter ) ">Copia Scadenza</a></small>
 		    </div>
-		    <small>Not After ({{ (crtTextCode_NotAfter_Expired == 'TRUE' ? 'Scaduto' : 'Valido' ) }})</small>
+		    <small>Scadenza{{ (crtTextCode_NotAfter_Expired == 'TRUE' ? ' (SCADUTO)' : '' ) }}</small>
 		  </div>  
 	  </div> 
 
 		<div class="form-check mt-3"
 			ng-show="crtTextCode_Is_CA == 'TRUE' && ( crtTextCode_CN == crtTextCode_Issuer )">
-		  <i class="fas fa-check-circle text-danger" id="flexCheckDisabled" aria-hidden="true"></i>
+		  <i class="fas fa-award text-danger" id="flexCheckDisabled" aria-hidden="true"></i>
 		  <label class="form-check-label" for="flexCheckDisabled">
 		    CA Root
 		  </label>
 		</div>
 		<div class="form-check mt-3"
 			ng-show="crtTextCode_Is_CA == 'TRUE' && ( crtTextCode_CN != crtTextCode_Issuer )">
-		  <i class="fas fa-check-circle text-danger" id="flexCheckDisabled" aria-hidden="true"></i>
+		  <i class="fas fa-award text-danger" id="flexCheckDisabled" aria-hidden="true"></i>
 		  <label class="form-check-label" for="flexCheckDisabled">
 		    CA Intermediate
 		  </label>
@@ -86,7 +86,7 @@
 			  ]"
 	ng-show="! $parent.crtTextCode_First">
 	<div class="card-header">
-		Contenuto Desiderato (TOBE)
+		Info File Ideale
 	</div>
 		<div class="card-body">
 		  
@@ -96,10 +96,10 @@
 			  ng-show="! $parent.crtTextCode_First">
 			  <div class="list-group-item list-group-item-action flex-column align-items-start ">
 			    <div class="d-flex w-100 justify-content-between">
-			      <h6 class="mb-1">{{crtTextCode_FileName || 'File Name...'}}</h6>
-			      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_FileName ) ">Copia File Name</a></small>
+			      <h6 class="mb-1">{{crtTextCode_FileName || 'Nome File...'}}</h6>
+			      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_FileName ) ">Copia Nome File</a></small>
 			    </div>
-			    <small>File Name</small>
+			    <small>Nome File</small>
 			  </div>
 <!-- 			  <div class="list-group-item list-group-item-action flex-column align-items-start"> -->
 <!-- 			    <div class="d-flex w-100 justify-content-between"> -->
@@ -115,7 +115,7 @@
 			  <div class="list-group-item list-group-item-action flex-column align-items-start mt-3">
 			    <div class="d-flex w-100 justify-content-between">
 			      <h6 class="mb-1"><pre>{{$parent.$parent.crtTextCode_TOBE || '...'}}</pre></h6>
-			      <small><a href="javascript:void(0)" ng-click="copyValueMultiline( $parent.$parent.crtTextCode_TOBE ) ">Copia Contenuto Desiderato</a></small>
+			      <small><a href="javascript:void(0)" ng-click="copyValueMultiline( $parent.$parent.crtTextCode_TOBE ) ">Copia Contenuto</a></small>
 			    </div>
 			  </div>  
 		  </div>  
