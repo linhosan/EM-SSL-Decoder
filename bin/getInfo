@@ -10,6 +10,11 @@ export LOG_FILE=/tmp/${SCRIPT_NAME}_${SESSION_ID}.log
 exec > >(tee -a ${LOG_FILE}) 2>&1
 
 ###########################
+export INPUT_FILENAME=
+
+export MODULUS=
+export MODULUS_MD5=
+
 export CN=
 export ISSUER=
 export NOTBEFORE=
@@ -18,26 +23,32 @@ export IS_CA=
 
 if [[ $# -eq 1 ]]; then
 
-  openssl x509 -noout -in ${1} -text > /dev/null 2>&1
+  INPUT_FILENAME=${1}
+
+  openssl x509 -noout -in ${INPUT_FILENAME} -text > /dev/null 2>&1
   
   if [ $? -eq 0 ]; then
+    MODULUS=$(         openssl x509 -noout -in ${INPUT_FILENAME} -modulus                    | awk -F"=" '{print $NF}' | xargs)
+    MODULUS_MD5=$(     openssl x509 -noout -in ${INPUT_FILENAME} -modulus   | openssl md5    | awk -F"=" '{print $NF}' | xargs)
 
-    CN=$(              openssl x509 -noout -in ${1} -subject   | awk -F"=" '{print $NF}' | xargs)
-    ISSUER=$(          openssl x509 -noout -in ${1} -issuer    | awk -F"=" '{print $NF}' | xargs)
+    CN=$(              openssl x509 -noout -in ${INPUT_FILENAME} -subject                    | awk -F"=" '{print $NF}' | xargs)
+    ISSUER=$(          openssl x509 -noout -in ${INPUT_FILENAME} -issuer                     | awk -F"=" '{print $NF}' | xargs)
 
-    NOTBEFORE_NOFORM=$(openssl x509 -noout -in ${1} -startdate | grep notBefore | awk -F"=" '{print $NF}' | xargs)
-    NOTAFTER_NOFORM=$( openssl x509 -noout -in ${1} -enddate   | grep notAfter | awk -F"=" '{print $NF}' | xargs)
+    NOTBEFORE_NOFORM=$(openssl x509 -noout -in ${INPUT_FILENAME} -startdate | grep notBefore | awk -F"=" '{print $NF}' | xargs)
+    NOTAFTER_NOFORM=$( openssl x509 -noout -in ${INPUT_FILENAME} -enddate   | grep notAfter  | awk -F"=" '{print $NF}' | xargs)
     NOTBEFORE=$(date -d "${NOTBEFORE_NOFORM}" +"%d %b %Y")
     NOTAFTER=$( date -d "${NOTAFTER_NOFORM}"  +"%d %b %Y")
   
-    IS_CA=$(           openssl x509 -noout -in ${1} -ext basicConstraints | grep "CA:" | awk -F"," '{print $1}'| awk -F":" '{print $NF}' | xargs)
+    IS_CA=$(           openssl x509 -noout -in ${INPUT_FILENAME} -ext basicConstraints | grep "CA:" | awk -F"," '{print $1}'| awk -F":" '{print $NF}' | xargs)
   
     echo -n "OK: {"
     echo -n "  \"CN\": \"${CN}\","
     echo -n "  \"Issuer\": \"${ISSUER}\","
     echo -n "  \"NotBefore\": \"${NOTBEFORE}\","
     echo -n "  \"NotAfter\": \"${NOTAFTER}\","
-    echo -n "  \"Is_CA\": \"${IS_CA}\""
+    echo -n "  \"Is_CA\": \"${IS_CA}\","
+    echo -n "  \"Modulus\": \"${MODULUS}\","
+    echo -n "  \"Modulus_MD5\": \"${MODULUS_MD5}\""
     echo -e "}"
   
   else
