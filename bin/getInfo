@@ -60,3 +60,8 @@ if [[ $# -eq 1 ]]; then
 else
   echo -e "Usage: ${SCRIPT_NAME} <fileName.crt>"
 fi
+
+
+
+
+
