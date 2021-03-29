@@ -78,11 +78,14 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		console.log('- on() crt_Decode_Return');
 		console.log(data);
 		
-		$rootScope.crtTextCode_CN = data.CN;
-		$rootScope.crtTextCode_Issuer = data.Issuer;
-		$rootScope.crtTextCode_NotBefore = data.NotBefore;
-		$rootScope.crtTextCode_NotAfter = data.NotAfter;
-		$rootScope.crtTextCode_Is_CA = data.Is_CA;
+		$rootScope.crtTextCode_CN           = data.CN;
+		$rootScope.crtTextCode_Issuer =      data.Issuer;
+		$rootScope.crtTextCode_NotBefore =   data.NotBefore;
+		$rootScope.crtTextCode_NotAfter =    data.NotAfter;
+		$rootScope.crtTextCode_Is_CA =       data.Is_CA;
+		
+		$rootScope.crtTextCode_Modulus =     data.Modulus;
+		$rootScope.crtTextCode_Modulus_MD5 = data.Modulus_MD5;
 		
 		console.log('crtTextCode_CN: ' + $rootScope.crtTextCode_CN);
 		console.log('crtTextCode_Issuer: ' + $rootScope.crtTextCode_Issuer);
@@ -118,6 +121,14 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		
 		$rootScope.crtTextCode_FileName += '.crt' ;
 		console.log('crtTextCode_FileName: ' + $rootScope.crtTextCode_FileName);
+		
+		$rootScope.crtTextCode_NotAfter_Expired;
+		const today = new Date();
+		if (today.getTime() > d.getTime())
+			$rootScope.crtTextCode_NotAfter_Expired = 'TRUE';
+		else
+			$rootScope.crtTextCode_NotAfter_Expired = 'FALSE';
+		console.log('crtTextCode_NotAfter_Expired: ' + $rootScope.crtTextCode_NotAfter_Expired);
 		
 		$rootScope.crtTextCode_TOBE  = 'CN:     ' + $rootScope.crtTextCode_CN + '\n';
 		$rootScope.crtTextCode_TOBE += 'Issuer: ' + $rootScope.crtTextCode_Issuer + '\n';

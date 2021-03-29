@@ -4,10 +4,14 @@
 
 
 <!-- Info Certificato -->
-<div class="card mb-3"
+<div class="card mb-3 "
+  	ng-class="[
+				  crtTextCode_NotAfter_Expired == 'TRUE' ? 'border-danger' : ''
+				, crtTextCode_NotAfter_Expired == 'FALSE' ? 'border-primary' : ''
+			  ]"
 	ng-show="! $parent.crtTextCode_First">
 	<div class="card-header">
-		Info Certificato
+		Info Certificato ({{ (crtTextCode_NotAfter_Expired == 'TRUE' ? 'Scaduto' : 'Valido' ) }})
 	</div>
 	<div class="card-body">
 		
@@ -43,12 +47,15 @@
 		    </div>
 		    <small>Not Before</small>
 		  </div>
-		  <div class="list-group-item list-group-item-action flex-column align-items-start ">
+		  <div class="list-group-item list-group-item-action flex-column align-items-start "
+		  	ng-class="[
+						crtTextCode_NotAfter_Expired == 'TRUE' ? 'bg-danger text-white' : ''
+					  ]">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mb-1">{{crtTextCode_NotAfter || 'Not After...'}}</h6>
 		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_NotAfter ) ">Copia Data</a></small>
 		    </div>
-		    <small>Not After</small>
+		    <small>Not After ({{ (crtTextCode_NotAfter_Expired == 'TRUE' ? 'Scaduto' : 'Valido' ) }})</small>
 		  </div>  
 	  </div> 
 
@@ -72,7 +79,11 @@
 
 
 
-<div class="card mb-5"
+<div class="card mb-3 "
+  	ng-class="[
+				  crtTextCode_NotAfter_Expired == 'TRUE' ? 'border-danger' : ''
+				, crtTextCode_NotAfter_Expired == 'FALSE' ? 'border-primary' : ''
+			  ]"
 	ng-show="! $parent.crtTextCode_First">
 	<div class="card-header">
 		Contenuto Desiderato (TOBE)
@@ -111,5 +122,52 @@
 			
 	    </div> 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Info Modulus -->
+<div class="card mb-5 "
+  	ng-class="[
+				  crtTextCode_NotAfter_Expired == 'TRUE' ? 'border-danger' : ''
+				, crtTextCode_NotAfter_Expired == 'FALSE' ? 'border-primary' : ''
+			  ]"
+	ng-show="! $parent.crtTextCode_First">
+	<div class="card-header">
+		Info Aggiuntive
+	</div>
+	<div class="card-body">
+		
+		
+		
+	  <div class="list-group"
+		ng-show="! $parent.crtTextCode_First">
+<!-- 		  <div class="list-group-item list-group-item-action flex-columnalign-items-start " > -->
+<!-- 		    <div class="d-flex w-100 justify-content-between"> -->
+<!-- 		      <h6 class="mb-1">{{crtTextCode_Modulus || 'Modulus ...'}}</h6> -->
+<!-- 		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_Modulus ) ">Copia Modulus</a></small> -->
+<!-- 		    </div> -->
+<!-- 		    <small>Modulus</small> -->
+<!-- 		  </div> -->
+		  <div class="list-group-item list-group-item-action flex-column align-items-start" >
+		    <div class="d-flex w-100 justify-content-between">
+		      <h6 class="mb-1">{{crtTextCode_Modulus_MD5 || 'Modulus MD5 ...'}}</h6>
+		      <small><a href="javascript:void(0)" ng-click="copyValue( crtTextCode_Modulus_MD5 ) ">Copia Modulus MD5</a></small>
+		    </div>
+		    <small>Modulus MD5</small>
+		  </div>
+	</div> 
+</div> 
 
 
