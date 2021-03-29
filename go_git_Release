@@ -78,13 +78,6 @@ read
 docker build --rm -t ${IMAGE_NAME}:latest \
                   -t ${IMAGE_NAME}:${TAG} .
 
-docker run -d --restart unless-stopped                               \
-  --privileged                                                       \
-  --name EM_SSL_Decoder                                              \
-  --hostname EM_SSL_Decoder                                          \
-  -p 4000:4000                                                       \
-  ${IMAGE_NAME}:latest
-
 
 
 
