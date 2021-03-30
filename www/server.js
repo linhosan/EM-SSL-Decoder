@@ -4,7 +4,7 @@ const VERBOSE = process.argv[2];
 //const VERBOSE = 'NO';
 const DEBUG = "YES";
 const HOME = process.env.HOME;
-const DEFAULT_SUITE_NAME = process.env.HOSTNAME; ;
+const DEFAULT_SUITE_NAME = "EM-SSL-Decoder"; ;
 const DEFAULT_EMSSL_PORT = '4000';
 
 let SUITE_NAME = process.env.SUITE_NAME || DEFAULT_SUITE_NAME;
