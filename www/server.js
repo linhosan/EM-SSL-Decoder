@@ -22,7 +22,6 @@ const io = require('socket.io').listen(server);
 const fs = require('fs');
 const child_process = require('child_process');
 const path = require('path');
-const regExpReplace = require('replace-in-file');
 
 let connections = [];
 
@@ -31,7 +30,9 @@ server.listen(EMSSL_PORT);
 _log("- " + SUITE_NAME);
 _log("  Running on port " + EMSSL_PORT + "\n");
 
-app.use(favicon(path.join(__dirname, 'img', 'favicon.ico')))
+//app.use(favicon(path.join(__dirname, 'img', 'favicon.ico')));
+app.use('/favicon.ico', express.static('/img/favicon.ico'));
+
 app.use("/css",  express.static(__dirname + '/css'));
 app.use("/img",  express.static(__dirname + '/img'));
 app.use("/js",  express.static(__dirname + '/js'));

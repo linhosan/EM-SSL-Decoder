@@ -1,15 +1,12 @@
-<div class="row" style="background-image: url('/img/logo-512.png'); 	width: 512px; height: 512px;; position: absolute;top: 60px; left: 25%; opacity: 0.08;">
-</div>
+<!-- <div class="row" style="background-image: url('/img/logo-512.png'); 	width: 512px;	height: 512px;	position: absolute;	top: 60px;	left: 25%;	opacity: 0.08;"> -->
+<!-- </div> -->
 
 
 
 <!-- Info Certificato -->
-<div class="card mb-3 "
-  	ng-class="[
-				  crtTextCode_NotAfter_Expired == 'TRUE' ? 'border-danger' : ''
-				, crtTextCode_NotAfter_Expired == 'FALSE' ? 'border-primary' : ''
-			  ]"
-	>
+
+<div class="card mb-3 border-primary"
+  	ng-class="crtTextCode_NotAfter_Expired == 'TRUE' ? 'border-danger' : ''" >
 	<div class="card-header">
 		Info Certificato{{ (crtTextCode_NotAfter_Expired == 'TRUE' ? ' (SCADUTO)' : '' ) }}
 	</div>
@@ -17,12 +14,11 @@
 		
 		
 		
-	  <div class="list-group"
-		>
-		  <div class="list-group-item list-group-item-action flex-column align-items-start"
+	  <div class="list-group border-primary">
+		  <div class="list-group-item list-group-item-action flex-column align-items-start "
 		  	ng-class="[
-						(crtTextCode_Is_CA == 'TRUE'  ) ? 'text-danger' : ''
-					  , (crtTextCode_Is_CA == 'FALSE' ) ? 'text-primary' : ''
+						  (crtTextCode_Is_CA == 'TRUE'  ) ? 'text-danger' : ''
+						, (crtTextCode_Is_CA == 'FALSE'  ) ? 'text-primary' : ''
 					  ]">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mb-1">{{crtTextCode_CN || 'CN: &#60;Canonical Name&#62;'}}</h6>
@@ -79,12 +75,9 @@
 
 
 
-<div class="card mb-3 "
-  	ng-class="[
-				  crtTextCode_NotAfter_Expired == 'TRUE' ? 'border-danger' : ''
-				, crtTextCode_NotAfter_Expired == 'FALSE' ? 'border-primary' : ''
-			  ]"
-	>
+
+<div class="card mb-3 border-primary"
+  	ng-class="crtTextCode_NotAfter_Expired == 'TRUE' ? 'border-danger' : ''" >
 	<div class="card-header">
 		Info File Ideale
 	</div>
@@ -92,8 +85,7 @@
 		  
 		  
 	
-			<div class="list-group"
-			  >
+			<div class="list-group border-primary" >
 			  <div class="list-group-item list-group-item-action flex-column align-items-start ">
 			    <div class="d-flex w-100 justify-content-between">
 			      <h6 class="mb-1">{{crtTextCode_FileName || 'Filename: &#60;Nome File&#62;'}}</h6>
@@ -162,12 +154,8 @@ YCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMM
 
 
 <!-- Info Modulus -->
-<div class="card mb-5 "
-  	ng-class="[
-				  crtTextCode_NotAfter_Expired == 'TRUE' ? 'border-danger' : ''
-				, crtTextCode_NotAfter_Expired == 'FALSE' ? 'border-primary' : ''
-			  ]"
-	>
+<div class="card mb-3 border-primary"
+  	ng-class="crtTextCode_NotAfter_Expired == 'TRUE' ? 'border-danger' : ''" >
 	<div class="card-header">
 		Info Aggiuntive
 	</div>
@@ -175,8 +163,7 @@ YCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMM
 		
 		
 		
-	  <div class="list-group"
-		>
+	  <div class="list-group border-primary">
 <!-- 		  <div class="list-group-item list-group-item-action flex-columnalign-items-start " > -->
 <!-- 		    <div class="d-flex w-100 justify-content-between"> -->
 <!-- 		      <h6 class="mb-1">{{crtTextCode_Modulus || 'Modulus: &#60;Modulus&#62;'}}</h6> -->
@@ -191,6 +178,7 @@ YCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMM
 		    </div>
 		    <small>Modulus MD5</small>
 		  </div>
+      </div> 
 	</div> 
 </div> 
 
