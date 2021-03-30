@@ -27,7 +27,7 @@ app.controller('Certificati_Controller', ['$scope', '$route', '$rootScope', '$ro
 	
 	// Qua dentro ciò che va eseguito al termine del caricamento della pagina! ;-)
 	$scope.$on('$includeContentLoaded', function(event) {
-		$('#Modal_CrtTextCode').modal('show');
+		//$('#Modal_CrtTextCode').modal('show');
 	});
 }]);
 
@@ -224,9 +224,8 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 				PATH: tmpP
 			});
 		
-		$('#ModalException').modal({
-			keyboard: false
-		});
+		$('#ModalException').modal('show')
+		$('#ModalException').modal('handleUpdate');
 
 		console.log(data);
 	});	
@@ -259,11 +258,13 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 		console.log(data);
 	});
 		
-	$rootScope.cm_Avvisi_Svuota = function() {
-		console.log('- cm_Avvisi_Svuota');
-		$rootScope.avvisi = []; 
-	}
+//	$rootScope.cm_Avvisi_Svuota = function() {
+//		console.log('- cm_Avvisi_Svuota');
+//		$rootScope.avvisi = []; 
+//	}
 	cm.on('cm_Avvisi', function (data) {
+	
+		$rootScope.avvisi = []; 
 
 		console.log('- on() cm_Avvisi');
 		console.log('         FUNCTION: ' + data.FUNCTION);
@@ -277,7 +278,6 @@ app.run(function($rootScope, $routeParams, $route, $sce, cm, Global, naturalServ
 			});
 		
 		$('#ModalAvvisi').modal({
-			keyboard: false
 		});
 		
 		console.log(data);
