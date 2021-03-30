@@ -135,5 +135,12 @@ docker push ${IMAGE_NAME}:latest
 docker push ${IMAGE_NAME}:${TAG}
 
 
+
+echo    ""
+echo -n "> Rimuovo le immagini Docker locali"
+read
+docker rmi ${IMAGE_NAME}
+docker rmi $(docker images | grep "${IMAGE_NAME}" | tr -s ' ' | cut -d ' ' -f 3 | head -1)
+
 echo    ""
 echo    "> Fine"
