@@ -176,7 +176,7 @@ YCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMM
 	aria-hidden="true"
 	aria-labelledby="ModalAvvisi_Title">
 		<div 
-		class="modal-dialog modal-lg" 
+		class="modal-dialog modal-dialog-centered" 
 		role="document"
 		>
 			<div class="modal-content   ">
@@ -196,32 +196,24 @@ YCERTIFICATEALPHANUMERICCODEDUMMYCERTIFICATEALPHANUMERICCODEDUMM
 								aria-labelledby="header_{{$index}}_avvisi" 
 								data-parent="#accordion_Avvisi">
 								<div class="card-body ">
-									<ul class="list-group list-group-flush">
-									  <li class="list-group-item ">
-									  	<h5 class="mb-1 text-primary">{{aa.MESSAGE || 'N/A'}}</h5>
-      								  </li>
-									</ul>
-								</div>
-								<div class="card m-2  border-primary ">
-									<div class="card-body">{{aa.STATUS || 'N/A'}}
+									<h5 class="mb-1 text-primary">{{aa.MESSAGE || 'N/A'}}</h5>
 									<blockquote class="blockquote mb-0">
-										<footer class="blockquote-footer">Status</footer>
+										<footer class="blockquote-footer">{{aa.STATUS || 'N/A'}}</footer>
 									</blockquote>
-									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer text-light">
-					<button 
-						data-dismiss="modal" 
-						ng-show="avvisi.length"
-						type="button" 
-						class="btn btn-danger btn-block" 
-						id="ModalAvvisi_Svuota_Btn" 
-						ng-click="cm_Avvisi_Svuota()">Svuota</button>
-				</div>
+<!-- 				<div class="modal-footer text-light"> -->
+<!-- 					<button  -->
+<!-- 						data-dismiss="modal"  -->
+<!-- 						ng-show="avvisi.length" -->
+<!-- 						type="button"  -->
+<!-- 						class="btn btn-outline-primary btn-block"  -->
+<!-- 						id="ModalAvvisi_Svuota_Btn"  -->
+<!-- 						ng-click="cm_Avvisi_Svuota()">Chiudi</button> -->
+<!-- 				</div> -->
 			</div>
 		</div>
 	</div>
