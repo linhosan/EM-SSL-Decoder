@@ -27,5 +27,8 @@ RUN chmod +x /root/bin/get*
 
 WORKDIR /root
 
-CMD [ "node", "www/server.js", "-v" ]
-EXPOSE 3000
+ARG DEBUG=${DEBUG}
+ENV DEBUG=${DEBUG}
+
+CMD [ "node", "www/server.js" ]
+EXPOSE 4000
