@@ -1,8 +1,6 @@
 'use strict';
 
-const VERBOSE = process.argv[2];
-//const VERBOSE = 'NO';
-const DEBUG = "YES";
+const DEBUG = process.env.DEBUG;
 const HOME = process.env.HOME;
 const DEFAULT_SUITE_NAME = "EM-SSL-Decoder"; ;
 const DEFAULT_EMSSL_PORT = '4000';
@@ -23,12 +21,59 @@ const fs = require('fs');
 const child_process = require('child_process');
 const path = require('path');
 
-let connections = [];
 
+
+
+
+
+
+const { createLogger, format, transports } = require('winston');
+const { combine, timestamp, label, printf } = format;
+
+const wlFormat = printf(({ level, message, label, timestamp }) => {
+  return `[${timestamp}] [${label}] ${message}`;
+});
+
+const wlLog = createLogger({
+  level: 'info',
+  format: combine(
+    label({ label: 'INFO' }),
+    timestamp({format: 'YYYYMMDD HH:mm:ss'}),
+    wlFormat
+  ),
+  transports: [new transports.Console()]
+});
+const wlError = createLogger({
+  level: 'error',
+  format: combine(
+    label({ label: 'ERROR' }),
+    timestamp({format: 'YYYYMMDD HH:mm:ss'}),
+    wlFormat
+  ),
+  transports: [new transports.Console()]
+});
+const wlDebug = createLogger({
+  level: 'debug',
+  format: combine(
+    label({ label: 'DEBUG' }),
+    timestamp({format: 'YYYYMMDD HH:mm:ss'}),
+    wlFormat
+  ),
+  transports: [new transports.Console()]
+});
+
+
+
+
+
+
+
+
+let connections = [];
 server.listen(EMSSL_PORT);
 
-_log("- " + SUITE_NAME);
-_log("  Running on port " + EMSSL_PORT + "\n");
+_log(SUITE_NAME, 'Startup', 'Suite Name');
+_log('Running on port '+ EMSSL_PORT, 'Startup', 'Status' );
 
 //app.use(favicon(path.join(__dirname, 'img', 'favicon.ico')));
 app.use('/favicon.ico', express.static('/img/favicon.ico'));
@@ -64,8 +109,7 @@ function getGlobal(socket) {
 	// Esempio: { EMSSL_PORT: '4003', SUITE_NAME: 'EM_SSL_Decoder', SUITE_AUTHOR: 'LinhoSan', SUITE_AUTHOR_URL: 'https://bitbucket.org/LinhoSan/' };
 	
 	let g = { EMSSL_PORT: EMSSL_PORT, SUITE_NAME: SUITE_NAME, SUITE_AUTHOR: SUITE_AUTHOR, SUITE_AUTHOR_URL: SUITE_AUTHOR_URL };
-	_log('- socket.emit() getGlobal_Return');
-	_log(g);
+    _debug  ('', 'getGlobal_Return', 'socket.emit', g);
 	socket.emit('getGlobal_Return', g);
 }
 
@@ -82,31 +126,36 @@ function crt_Decode(socket, data) {
 	//    Fail: Il formato del certificato non e' valido!
 	//    Usage: getInfo <fileName.crt>
 	
-	fs.writeFileSync('/tmp/dummy.crt', data, { mode: 0o755 });	
-	_log('crt_Decode => writeFileSync: OK');
+	fs.writeFileSync('/tmp/dummy.crt', data, { mode: 0o755 });
+    _debug  ('OK'		, 'crt_Decode', 'writeFileSync: Status');
 		
 	const child = child_process.spawnSync(HOME + '/bin/getInfo', [ '/tmp/dummy.crt' ]);
 	
 	let cRet = child.stdout.toString().trim() ;
 	let cStatus  = cRet.substr( 0, cRet.indexOf(':') ).trim();
 	let cMessage = cRet.substr( cRet.indexOf(':') + 2 ).trim();
-	_log('crt_Decode => getInfo => cRet => ' + cRet);
-	_log('crt_Decode => getInfo => cStatus => ' + cStatus);
-	_log('crt_Decode => getInfo => cMessage => ' + cMessage);
 	
 	if (cStatus == 'Fail')
 	{
+	    _error(cStatus	, 'crt_Decode', 'getInfo: Status');
+	    _error(cMessage	, 'crt_Decode', 'getInfo: Message');
+	    _error(''	, 'crt_Decode', 'getInfo: Payload', data);
 		cm_Avvisi('crt_Decode => getInfo', cStatus, cMessage, socket);
 	}
 	else if (cStatus == 'OK')
 	{
 		try {
 			let ret = JSON.parse( cMessage );
-			_log('crt_Decode => JSON.parse: ');
-			_log(ret);
-			
+		    _log(cStatus			, 'crt_Decode', 'getInfo: Status');
+		    _debug(ret.CN			, 'crt_Decode', 'getInfo: Message: CN');
+		    _debug(ret.Issuer		, 'crt_Decode', 'getInfo: Message: Issuer');
+		    _debug(ret.NotBefore	, 'crt_Decode', 'getInfo: Message: NotBefore');
+		    _debug(ret.NotAfter		, 'crt_Decode', 'getInfo: Message: NotAfter');
+		    _debug(ret.Is_CA		, 'crt_Decode', 'getInfo: Message: Is_CA');
+		    _debug(ret.Modulus		, 'crt_Decode', 'getInfo: Message: Modulus');
+		    _debug(ret.Modulus_MD5	, 'crt_Decode', 'getInfo: Message: Modulus_MD5');
+    		_debug  ('', 'crt_Decode_Return', 'socket.emit', ret);
 			socket.emit('crt_Decode_Return', ret);
-			_log('- socket.emit() crt_Decode_Return');
 			
 		} catch (err) {
 			cm_Exception('crt_Decode', err, socket);
@@ -129,23 +178,24 @@ function crt_Decode(socket, data) {
 
 io.sockets.on('connection', function (socket) {
 	connections.push(socket);
-	_log(`- io.sockets.on() connection: ${connections.length} sockets connected; ID: ${socket.id}`);
+	_debug(`Connections: ${connections.length}`, 'io.sockets.on', 'NEW');
+	_debug(`ID: ${socket.id}`, 'io.sockets.on', 'NEW');
 
 	socket.on('disconnect', function (data){
 		connections.splice(connections.indexOf(socket), 1);
-		_log(`- socket.on() disconnect() ${connections.length} sockets connected; ID: ${socket.id}`);
+		_debug(`Connections: ${connections.length}`, 'io.sockets.on', 'DISCONNECT');
+		_debug(`ID: ${socket.id}`, 'io.sockets.on', 'DISCONNECT');
 	});
 	
 	
 	
 	
 	socket.on('getGlobal', function (data) {
-		_log('- socket.on() getGlobal');
+		_debug('', 'socket.on', 'getGlobal' );
 		getGlobal(socket)
 	});
 	socket.on('crt_Decode', function (data) {
-		_log('- socket.on() crt_Decode');
-		_log(data);
+		_debug(data, 'socket.on', 'crt_Decode' );
 		crt_Decode(socket, data)
 	});
 	
@@ -161,15 +211,28 @@ io.sockets.on('connection', function (socket) {
 function isEmpty(value) {
 	return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
 }
-function _log(messaggio) {
-	if (VERBOSE == '-v')
-		console.log(messaggio);
-}
-function _debug(messaggio) {
-	if (DEBUG == 'YES')
-		process.stdout.write("[DEBUG] ");
-		console.log(messaggio);
-}
+
+function truncate(string, length) {
+	return string.length > length ? 
+    	string.substring(0, length) + ' [...]' :
+    	string;
+};
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 function cm_Exception(func, err, socket) {
 	
 	let ret = [];
@@ -181,30 +244,15 @@ function cm_Exception(func, err, socket) {
 		 	    PATH: err.path || ''
 		 	    };
 	
+	_log  (ret.FUNCTION,	'cm_Exception', 'FUNCTION');
+	_log  (ret.MESSAGE,		'cm_Exception', 'MESSAGE');
+	_log  (ret.STACK,		'cm_Exception', 'STACK');
+	_log  (ret.CODE,		'cm_Exception', 'CODE');
+	_log  (ret.ERRNO,		'cm_Exception', 'ERRNO');
+	_log  (ret.PATH,		'cm_Exception', 'PATH');
+	
+	_error  ('', 'cm_Exception', 'socket.emit', ret);
 	socket.emit('cm_Exception', ret);
-	console.log(`- socket.emit() cm_Exception: FUNCTION: (${ret.FUNCTION})`);
-	console.log(`                               MESSAGE: (${ret.MESSAGE})`);
-	console.log(`                                 STACK: (${ret.STACK})`);
-	console.log(`                                  CODE: (${ret.CODE})`);
-	console.log(`                                 ERRNO: (${ret.ERRNO})`);
-	console.log(`                                  PATH: (${ret.PATH})`);
-}
-function cm_Error(func, err, socket) {
-	
-	let ret = [];
-	ret = {	FUNCTION: func || '' ,
-			 MESSAGE: err.message || '',
-		 	    CODE: err.code || '',
-		 	   ERRNO: err.errno || '',
-		 	    PATH: err.path || ''
-		 	    };
-	
-	socket.emit('cm_Error', ret);
-	console.log(`- socket.emit() cm_Error: FUNCTION: (${ret.FUNCTION})`);
-	console.log(`                           MESSAGE: (${ret.MESSAGE})`);
-	console.log(`                              CODE: (${ret.CODE})`);
-	console.log(`                             ERRNO: (${ret.ERRNO})`);
-	console.log(`                              PATH: (${ret.PATH})`);
 }
 function cm_Avvisi(func, status, message, socket) {
 	
@@ -214,8 +262,83 @@ function cm_Avvisi(func, status, message, socket) {
 			 MESSAGE: message || ''
 		 	    };
 	
+	_debug  (ret.FUNCTION,	'cm_Avvisi', 'FUNCTION');
+	_debug  (ret.STATUS,		'cm_Avvisi', 'STATUS');
+	_debug  (ret.MESSAGE,		'cm_Avvisi', 'MESSAGE');
+	
+	_debug  ('', 'cm_Avvisi', 'socket.emit', ret);
 	socket.emit('cm_Avvisi', ret);
-	console.log(`- socket.emit() cm_Avvisi: FUNCTION: (${ret.FUNCTION})`);
-	console.log(`                             STATUS: (${ret.STATUS})`);
-	console.log(`                            MESSAGE: (${ret.MESSAGE})`);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function _log(messaggio, label1, label2, json) {
+
+	// Esempi:
+	// let prova = { A: 'A', B: 'B', C: 'C' };
+    //  _log  ('Mess');
+    //  _log  ('Mess', 'lbl1');
+    //  _log  ('Mess', 'lbl1', 'lbl2');
+    //  _log  ('Mess', 'lbl1', 'lbl2', prova);
+    //  _log  ('Mess', '', '', prova);
+    //  _log  ('Mess', 'lbl1', '', prova);
+    //  _log  ('Mess', '', 'lbl2', prova);
+    
+	wlLog.info(   (label1 ? '[' +label1+ ']' : '')
+				+ (label2 ? ' [' +label2+ ']' : '')
+				, { message: truncate(messaggio, 130) 
+						+ (messaggio.length > 0 ? ' ': '') 
+						+ (json ? '[JSON] ' +JSON.stringify(json) : '') 
+				  });
+}
+function _error(messaggio, label1, label2, json) {
+
+	// Esempi:
+	// let prova = { A: 'A', B: 'B', C: 'C' };
+    //  _error('Mess');
+    //  _error('Mess', 'lbl1');
+    //  _error('Mess', 'lbl1', 'lbl2');
+    //  _error('Mess', 'lbl1', 'lbl2', prova);
+    //  _error('Mess', '', '', prova);
+    //  _error('Mess', 'lbl1', '', prova);
+    //  _error('Mess', '', 'lbl2', prova);
+    
+	wlError.error(    (label1 ? '[' +label1+ ']' : '')
+					+ (label2 ? ' [' +label2+ ']' : '')
+					, { message: truncate(messaggio, 130) 
+							+ (messaggio.length > 0 ? ' ': '') 
+							+ (json ? '[JSON] ' +JSON.stringify(json) : '') 
+					  });
+}
+function _debug(messaggio, label1, label2, json) {
+
+	// Esempi:
+	// let prova = { A: 'A', B: 'B', C: 'C' };
+    //  _debug('Mess');
+    //  _debug('Mess', 'lbl1');
+    //  _debug('Mess', 'lbl1', 'lbl2');
+    //  _debug('Mess', 'lbl1', 'lbl2', prova);
+    //  _debug('Mess', '', '', prova);
+    //  _debug('Mess', 'lbl1', '', prova);
+    //  _debug('Mess', '', 'lbl2', prova);
+    
+	if (DEBUG == 'YES')
+		wlDebug.debug(    (label1 ? '[' +label1+ ']' : '')
+						+ (label2 ? ' [' +label2+ ']' : '')
+						, { message: truncate(messaggio, 130) 
+								+ (messaggio.length > 0 ? ' ': '') 
+								+ (json ? '[JSON] ' +JSON.stringify(json) : '') 
+						  });
 }
