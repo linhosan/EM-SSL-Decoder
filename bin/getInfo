@@ -31,8 +31,29 @@ if [[ $# -eq 1 ]]; then
     MODULUS=$(         openssl x509 -noout -in ${INPUT_FILENAME} -modulus                    | awk -F"=" '{print $NF}' | xargs)
     MODULUS_MD5=$(     openssl x509 -noout -in ${INPUT_FILENAME} -modulus   | openssl md5    | awk -F"=" '{print $NF}' | xargs)
 
-    CN=$(              openssl x509 -noout -in ${INPUT_FILENAME} -subject                    | awk -F"=" '{print $NF}' | xargs)
-    ISSUER=$(          openssl x509 -noout -in ${INPUT_FILENAME} -issuer                     | awk -F"=" '{print $NF}' | xargs)
+    while read LINE
+	do
+		LINE2=$(echo ${LINE} | xargs)
+		
+		if [[ "$LINE2" =~ ^CN ]]; then
+	    	CN=$(echo ${LINE2} | awk -F"=" '{print $NF}' | xargs)
+	    fi
+	done < <(openssl x509 -noout -in /tmp/dummy.crt -subject | tr -d '"' | sed 's/,/\n/g')
+    if [[ "$CN" == "" ]]; then
+    	echo -e "Fail: Impossibile estrarre il Common Name, Verificare il formato!"
+    fi
+    
+    while read LINE
+	do
+		LINE2=$(echo ${LINE} | xargs)
+		
+		if [[ "$LINE2" =~ ^CN ]]; then
+	    	ISSUER=$(echo ${LINE2} | awk -F"=" '{print $NF}' | xargs)
+	    fi
+	done < <(openssl x509 -noout -in /tmp/dummy.crt -issuer | tr -d '"' | sed 's/,/\n/g')
+    if [[ "$ISSUER" == "" ]]; then
+    	echo -e "Fail: Impossibile estrarre l'Issuer, Verificare il formato!"
+    fi
 
     NOTBEFORE_NOFORM=$(openssl x509 -noout -in ${INPUT_FILENAME} -startdate | grep notBefore | awk -F"=" '{print $NF}' | xargs)
     NOTAFTER_NOFORM=$( openssl x509 -noout -in ${INPUT_FILENAME} -enddate   | grep notAfter  | awk -F"=" '{print $NF}' | xargs)

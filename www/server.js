@@ -317,7 +317,7 @@ function _error(messaggio, label1, label2, json) {
     
 	wlError.error(    (label1 ? '[' +label1+ ']' : '')
 					+ (label2 ? ' [' +label2+ ']' : '')
-					, { message: truncate(messaggio, 130) 
+					, { message: messaggio
 							+ (messaggio.length > 0 ? ' ': '') 
 							+ (json ? '[JSON] ' +JSON.stringify(json) : '') 
 					  });
@@ -337,7 +337,7 @@ function _debug(messaggio, label1, label2, json) {
 	if (DEBUG == 'YES')
 		wlDebug.debug(    (label1 ? '[' +label1+ ']' : '')
 						+ (label2 ? ' [' +label2+ ']' : '')
-						, { message: truncate(messaggio, 130) 
+						, { message: messaggio 
 								+ (messaggio.length > 0 ? ' ': '') 
 								+ (json ? '[JSON] ' +JSON.stringify(json) : '') 
 						  });
