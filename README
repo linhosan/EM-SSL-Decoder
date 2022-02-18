@@ -1,3 +1,0 @@
-Verify that the private key and main/server certificate match:
-	openssl x509 -noout -modulus -in certificate.pem | openssl md5
-	openssl rsa -noout -modulus -in ssl.key | openssl md5
