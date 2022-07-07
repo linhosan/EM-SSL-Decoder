@@ -32,3 +32,4 @@ ENV DEBUG=${DEBUG}
 
 CMD [ "node", "www/server.js" ]
 EXPOSE 4000
+
