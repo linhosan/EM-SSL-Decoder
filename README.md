@@ -1,10 +1,12 @@
-### Installare Docker (Linux/Unix/Mac) oppure Docker Desktop (Windows) dal [sito ufficiale](https://www.docker.com/)
+# EM SSL Decoder
 
-### Aprire una shell (Linux/Unix/Mac) oppure il CMD (Windows), scaricare ed avviare "EM SSL Decoder"
+##### Suite di Visualizzazione Info SSL
+
+# Installare Docker (Linux/Unix/Mac) oppure Docker Desktop (Windows) dal [sito ufficiale](https://www.docker.com/)
+
+# Aprire una shell (Linux/Unix/Mac) oppure il CMD (Windows), scaricare ed avviare "EM SSL Decoder"
 
 ```
-docker pull linhosan/em-ssl-decoder:latest
-
 docker run -d --restart unless-stopped \
   --privileged \
   --name EM_SSL_Decoder \
@@ -13,4 +15,4 @@ docker run -d --restart unless-stopped \
   linhosan/em-ssl-decoder:latest
 ```
 
-### Navigare tramite browser sulla nuova istanza locale di [EM SSL Decoder](http://localhost:4000/)
+# Navigare tramite browser sulla nuova istanza locale di [EM SSL Decoder](http://localhost:4000/)
