@@ -1,16 +1,15 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 # Package Manager
-RUN apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y locales-all \
-                       ssh \
-                       software-properties-common \
- && apt-get install -y curl \
- &&   curl -sL http://nsolid-deb.nodesource.com/nsolid_setup_3.x | bash - \
- && apt-get install -y nsolid-dubnium nsolid-console \
-                       vim \
- && apt-get autoremove -y
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y locales-all
+RUN apt-get install -y ssh
+RUN apt-get install -y software-properties-common
+RUN apt-get install -y curl
+RUN curl -sL https://nsolid-deb.nodesource.com/nsolid_setup_4.x | bash -
+RUN apt-get install -y nsolid-hydrogen nsolid-console
+RUN apt-get autoremove -y
 
 # EM SSL Decoder
 RUN echo ""                           >> /root/.profile
