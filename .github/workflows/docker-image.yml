@@ -16,15 +16,17 @@ jobs:
     - name: Build the Docker image
     - uses: actions/checkout@v3
       run: docker build . --file Dockerfile --tag linhosan/em-ssl-decoder:$(date +%s) --tag linhosan/em-ssl-decoder:latest
-
-    - name: Login to Docker Hub
+    -
+      name: Login to Docker Hub
       uses: docker/login-action@v2
-        with:
-          username: linhosan
-          password: dckr_pat_YCyCr2_t4Mnsm7R_7J9cq_DUn28
-      -
-        name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: linhosan/em-ssl-decoder:$(date +%s)
+      with:
+        username: linhosan
+        password: dckr_pat_YCyCr2_t4Mnsm7R_7J9cq_DUn28
+    -
+      name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: linhosan/em-ssl-decoder:$(date +%s)
