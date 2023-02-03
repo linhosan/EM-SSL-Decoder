@@ -42,3 +42,5 @@ B --> E{Lancio GUI}
 ##### Navigare tramite browser sulla nuova istanza locale [EM SSL Decoder](http://localhost:4000/)
 
 </details>
+
+*by LinhoSan (on [BitBucket](https://bitbucket.org/LinhoSan/) | on [GitHub](https://github.com/linhosan/))*
