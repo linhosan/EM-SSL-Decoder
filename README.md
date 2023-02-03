@@ -31,7 +31,7 @@ B --> E{Lancio GUI}
 ##### Di default verrà eseguita l'ultima versione disponibilie (latest), altrimenti è possibile specificare una versione di immagine specifica. Per convenzione le versioni precedenti vengono esposte sulla porta 4001 e non sulla 4000.
 
 ```shell
-   docker run -d --restart unless-stopped --name EM_SSL_Decoder --hostname em_ssl_decoder -p 4001:4000 linhosan/em-ssl-decoder:emssldec_v1.09
+   docker run -d --restart unless-stopped --name EM_SSL_Decoder_Old --hostname em_ssl_decoder_old -p 4001:4000 linhosan/em-ssl-decoder:emssldec_v1.09
 ```
 
 </details>
