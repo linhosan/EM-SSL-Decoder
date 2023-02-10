@@ -10,6 +10,8 @@ RUN apt-get install -y curl
 RUN curl -sL https://nsolid-deb.nodesource.com/nsolid_setup_4.x | bash -
 RUN apt-get install -y nsolid-hydrogen nsolid-console
 RUN apt-get install -y vim
+RUN apt-get install -y dnsutils
+RUN apt-get install -y iputils-ping
 RUN apt-get autoremove -y
 
 # EM SSL Decoder
