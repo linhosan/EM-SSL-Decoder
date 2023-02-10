@@ -38,7 +38,7 @@ if [[ $# -eq 1 ]]; then
 		if [[ "$LINE2" =~ ^CN ]]; then
 	    	CN=$(echo ${LINE2} | awk -F"=" '{print $NF}' | xargs)
 	    fi
-	done < <(openssl x509 -noout -in /tmp/dummy.crt -subject | sed -e "s/^subject=//" | tr -d '"' | sed 's/,/\n/g')
+	done < <(openssl x509 -noout -in ${INPUT_FILENAME} -subject | sed -e "s/^subject=//" | tr -d '"' | sed 's/,/\n/g')
     if [[ "$CN" == "" ]]; then
     	echo -e "Fail: Impossibile estrarre il Common Name, Verificare il formato!"
     	exit 8
@@ -51,7 +51,7 @@ if [[ $# -eq 1 ]]; then
 		if [[ "$LINE2" =~ ^CN ]]; then
 	    	ISSUER=$(echo ${LINE2} | awk -F"=" '{print $NF}' | xargs)
 	    fi
-	done < <(openssl x509 -noout -in /tmp/dummy.crt -issuer | sed -e "s/^issuer=//" | tr -d '"' | sed 's/,/\n/g')
+	done < <(openssl x509 -noout -in ${INPUT_FILENAME} -issuer | sed -e "s/^issuer=//" | tr -d '"' | sed 's/,/\n/g')
     if [[ "$ISSUER" == "" ]]; then
     	echo -e "Fail: Impossibile estrarre l'Issuer, Verificare il formato!"
     	exit 9

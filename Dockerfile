@@ -9,6 +9,7 @@ RUN apt-get install -y software-properties-common
 RUN apt-get install -y curl
 RUN curl -sL https://nsolid-deb.nodesource.com/nsolid_setup_4.x | bash -
 RUN apt-get install -y nsolid-hydrogen nsolid-console
+RUN apt-get install -y vim
 RUN apt-get autoremove -y
 
 # EM SSL Decoder
@@ -24,10 +25,7 @@ RUN npm install
 # Permessi e Profile
 RUN chmod +x /root/bin/get*
 
-WORKDIR /root
+WORKDIR /root/www/
 
-ARG DEBUG=${DEBUG}
-ENV DEBUG=${DEBUG}
-
-CMD [ "node", "www/server.js" ]
+CMD [ "node", "server.js" ]
 EXPOSE 4000
