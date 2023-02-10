@@ -18,6 +18,7 @@
     "multer": "1.4.2",
     "serve-favicon": "2.5.0",
     "socket.io": "2.1.0",
+    "dotenv": "*",
     "winston": "*"
   },
   "repository": "bitbucket:LinhoSan/em-ssl-decoder",
