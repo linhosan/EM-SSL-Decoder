@@ -12,6 +12,7 @@ RUN apt-get install -y nsolid-hydrogen nsolid-console
 RUN apt-get install -y vim
 RUN apt-get install -y dnsutils
 RUN apt-get install -y iputils-ping
+RUN apt-get install -y net-tools
 RUN apt-get autoremove -y
 
 # EM SSL Decoder
