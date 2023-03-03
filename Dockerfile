@@ -32,3 +32,4 @@ WORKDIR /root/www/
 
 CMD [ "node", "server.js" ]
 EXPOSE 4000
+
