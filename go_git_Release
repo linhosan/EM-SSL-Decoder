@@ -1,5 +1,11 @@
 #!/bin/bash
 
+echo "> Resetto le credenziali di accesso a GitHub (Windows Credentials Generic)
+echo -n "> "
+read
+powershell "cmdkey /delete:git:https://github.com"
+powershell 'cmdkey /generic:LegacyGeneric:target=git:https://github.com /user:"manuel.puricelli@gmail.com"  /pass:"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"'
+
 export IMAGE_NAME=linhosan/em-ssl-decoder
 export PREFISSO_TAG=emssldec_v
 export FILTER_NAME=EM_SSL_Decoder
