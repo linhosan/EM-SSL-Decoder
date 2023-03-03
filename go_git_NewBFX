@@ -1,16 +1,4 @@
 #!/bin/bash
 
-
-
-echo    ""
-echo -n "> Checkout master"
-read
 git checkout master
-
-echo    ""
-echo -n "> Creo 'bfx' e ci entro"
-read
 git checkout -b bfx
-
-echo    ""
-echo    "> Fine"
