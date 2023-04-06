@@ -21,6 +21,10 @@ export NOTBEFORE=
 export NOTAFTER=
 export IS_CA=
 
+function trim(){
+  echo $@
+}
+
 if [[ $# -eq 1 ]]; then
 
   INPUT_FILENAME=${1}
@@ -28,15 +32,19 @@ if [[ $# -eq 1 ]]; then
   openssl x509 -noout -in ${INPUT_FILENAME} -text > /dev/null 2>&1
   
   if [ $? -eq 0 ]; then
-    MODULUS=$(         openssl x509 -noout -in ${INPUT_FILENAME} -modulus                    | awk -F"=" '{print $NF}' | xargs)
-    MODULUS_MD5=$(     openssl x509 -noout -in ${INPUT_FILENAME} -modulus   | openssl md5    | awk -F"=" '{print $NF}' | xargs)
+    MODULUS=$(openssl x509 -noout -in ${INPUT_FILENAME} -modulus | awk -F"=" '{print $NF}')
+    MODULUS=$(trim ${MODULUS})
+
+    MODULUS_MD5=$(openssl x509 -noout -in ${INPUT_FILENAME} -modulus | openssl md5 | awk -F"=" '{print $NF}')
+    MODULUS_MD5=$(trim ${MODULUS_MD5})
 
     while read LINE
 	do
-		LINE2=$(echo ${LINE} | xargs)
+    LINE2=$(trim ${LINE})
 		
 		if [[ "$LINE2" =~ ^CN ]]; then
-	    	CN=$(echo ${LINE2} | awk -F"=" '{print $NF}' | xargs)
+	    	CN=$(echo ${LINE2} | awk -F"=" '{print $NF}')
+        CN=$(trim ${CN})
 	    fi
 	done < <(openssl x509 -noout -in ${INPUT_FILENAME} -subject | sed -e "s/^subject=//" | tr -d '"' | sed 's/,/\n/g')
     if [[ "$CN" == "" ]]; then
@@ -46,10 +54,11 @@ if [[ $# -eq 1 ]]; then
     
     while read LINE
 	do
-		LINE2=$(echo ${LINE} | xargs)
+    LINE2=$(trim ${LINE})
 		
 		if [[ "$LINE2" =~ ^CN ]]; then
-	    	ISSUER=$(echo ${LINE2} | awk -F"=" '{print $NF}' | xargs)
+	    	ISSUER=$(echo ${LINE2} | awk -F"=" '{print $NF}')
+        ISSUER=$(trim ${ISSUER})
 	    fi
 	done < <(openssl x509 -noout -in ${INPUT_FILENAME} -issuer | sed -e "s/^issuer=//" | tr -d '"' | sed 's/,/\n/g')
     if [[ "$ISSUER" == "" ]]; then
@@ -57,12 +66,16 @@ if [[ $# -eq 1 ]]; then
     	exit 9
     fi
 
-    NOTBEFORE_NOFORM=$(openssl x509 -noout -in ${INPUT_FILENAME} -startdate | grep notBefore | awk -F"=" '{print $NF}' | xargs)
-    NOTAFTER_NOFORM=$( openssl x509 -noout -in ${INPUT_FILENAME} -enddate   | grep notAfter  | awk -F"=" '{print $NF}' | xargs)
+    NOTBEFORE_NOFORM=$(openssl x509 -noout -in ${INPUT_FILENAME} -startdate | grep notBefore | awk -F"=" '{print $NF}')
+    NOTBEFORE_NOFORM=$(trim ${NOTBEFORE_NOFORM})
     NOTBEFORE=$(date -d "${NOTBEFORE_NOFORM}" +"%d %b %Y")
+
+    NOTAFTER_NOFORM=$( openssl x509 -noout -in ${INPUT_FILENAME} -enddate | grep notAfter  | awk -F"=" '{print $NF}')
+    NOTAFTER_NOFORM=$(trim ${NOTAFTER_NOFORM})
     NOTAFTER=$( date -d "${NOTAFTER_NOFORM}"  +"%d %b %Y")
   
-    IS_CA=$(           openssl x509 -noout -in ${INPUT_FILENAME} -ext basicConstraints | grep "CA:" | awk -F"," '{print $1}'| awk -F":" '{print $NF}' | xargs)
+    IS_CA=$(openssl x509 -noout -in ${INPUT_FILENAME} -ext basicConstraints | grep "CA:" | awk -F"," '{print $1}'| awk -F":" '{print $NF}')
+    IS_CA=$(trim ${IS_CA})
   
     echo -n "OK: {"
     echo -n "  \"CN\": \"${CN}\","
