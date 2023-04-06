@@ -1,0 +1,132 @@
+#!/bin/bash
+
+./go_git_CredentialsReset
+
+export IMAGE_NAME=linhosan/em-ssl-decoder
+export PREFISSO_TAG=emssldec_v
+export FILTER_NAME=EM_SSL_Decoder
+
+export BRANCH_MITTENTE=$(git rev-parse --abbrev-ref HEAD)
+export BRANCH_MITTENTE_CAPITALIZED=${BRANCH_MITTENTE^}
+
+export TAG_MAJOR=
+export TAG_MINOR=
+export TAG_BUILD=
+export TAG=
+
+echo    ""
+echo    "> Tag di versione in arrivo dal '${BRANCH_MITTENTE}'... MAJOR?"
+echo -n "> "
+read TAG_MAJOR
+
+echo    ""
+echo    "> Tag di versione in arrivo dal '${BRANCH_MITTENTE}'... MINOR?"
+echo -n "> "
+read TAG_MINOR
+TAG_MINOR_ZEROS=".$(printf "%02d\n" ${TAG_MINOR})"
+
+echo    ""
+echo    "> Tag di versione in arrivo dal '${BRANCH_MITTENTE}'... BUILD?"
+echo -n "> "
+read TAG_BUILD
+TAG_BUILD_ZEROS=
+if [[ "${TAG_BUILD}" == "" || "${TAG_BUILD}" == "0"  ]]; then
+  TAG_BUILD_ZEROS=""
+else
+  TAG_BUILD_ZEROS=".$(printf "%02d\n" ${TAG_BUILD})"
+fi
+
+TAG=${PREFISSO_TAG}${TAG_MAJOR}${TAG_MINOR_ZEROS}${TAG_BUILD_ZEROS}
+echo    ""
+echo    "--> Nuovo TAG: ${TAG}"
+echo    "  >"
+echo -n "  > (Ctrl+C per annullare)"
+read
+
+docker rm -f $(docker ps -aq --filter name=${FILTER_NAME}_${BRANCH_MITTENTE_CAPITALIZED})
+docker rmi ${IMAGE_NAME}:${BRANCH_MITTENTE}
+
+echo    ""
+echo -n "> Checkout master"
+read
+git checkout master
+
+docker rm -f $(docker ps -aq --filter name=${FILTER_NAME})
+docker rmi ${IMAGE_NAME}:latest
+
+echo    ""
+echo -n "> Faccio il merge NO-FF dal '${BRANCH_MITTENTE}'"
+read
+git merge --no-ff ${BRANCH_MITTENTE} -m "Merge branch '${BRANCH_MITTENTE}' into 'master'"
+
+echo    ""
+echo -n "> Creo il tag per la nuova versione '${TAG}'"
+read
+git tag -a "${TAG}" -m "Aggiunto tag '${TAG}'"
+
+echo    ""
+echo -n "> Faccio la PUSH del 'master'"
+read
+git push origin master
+git push origin "${TAG}"
+
+echo    ""
+echo -n "> Faccio la BUILD del 'master' su Docker, la eseguo"
+read
+
+docker build --rm -t ${IMAGE_NAME}:latest \
+                  -t ${IMAGE_NAME}:${TAG} .
+
+docker run -d --restart unless-stopped \
+  --name ${FILTER_NAME}                \
+  --hostname ${FILTER_NAME,,}          \
+  -p 4000:4000                         \
+  ${IMAGE_NAME}:latest
+
+echo    ""
+echo -n "> Torno sul dev di default"
+read
+git checkout dev
+
+docker rm -f $(docker ps -aq --filter name=${FILTER_NAME}_Dev)
+docker rmi ${IMAGE_NAME}:dev
+
+echo    ""
+if [[ ${BRANCH_MITTENTE} == "dev" ]]; then
+  echo -n "> Faccio il Fast Forward (forzato) per avanzare il 'dev' al livello del 'master'"
+  read
+
+  git merge --ff-only master
+elif [[ ${BRANCH_MITTENTE} == "bfx" ]]; then
+  echo -n "> Faccio il merge NO-FF dal 'master' appena fixato"
+  read
+
+  git merge --no-ff master -m "Merge branch 'master' into 'dev'"
+fi
+
+echo    ""
+echo -n "> Faccio la PUSH del 'dev'"
+read
+git push origin dev
+
+if [[ ${BRANCH_MITTENTE} == "bfx" ]]; then
+  echo    ""
+  echo -n "> Cancello il 'bfx' in locale"
+  read
+  git branch -d bfx
+
+  echo    ""
+  echo -n "> Cancello il 'bfx' in remoto"
+  read
+  git push origin :bfx
+fi
+
+echo    ""
+echo -n "> Faccio la PUSH su Docker Hub"
+read
+
+docker push ${IMAGE_NAME}:latest
+docker push ${IMAGE_NAME}:${TAG}
+
+echo    ""
+echo    "> Fine"
