@@ -74,7 +74,7 @@ echo    ""
 echo -n "> Faccio la BUILD del 'master' su Docker, la eseguo"
 read
 
-docker build --rm -t ${IMAGE_NAME}:latest \
+docker build --no-cache --rm -t ${IMAGE_NAME}:latest \
                   -t ${IMAGE_NAME}:${TAG} .
 
 docker run -d --restart unless-stopped \

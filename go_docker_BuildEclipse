@@ -15,7 +15,7 @@ fi
 
 docker rm -f $(docker ps -aq --filter name=EM_SSL_Decoder_${BRANCH_ATTUALE_CAPITALIZED})
 docker rmi ${IMAGE_NAME} 2>/dev/null
-docker build --rm -t ${IMAGE_NAME} .
+docker build --no-cache --rm -t ${IMAGE_NAME} .
 docker run --env DEBUG=YES -d --restart unless-stopped \
   --privileged \
   --name EM_SSL_Decoder_${BRANCH_ATTUALE_CAPITALIZED}_Eclipse \
