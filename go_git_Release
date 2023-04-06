@@ -266,4 +266,3 @@ docker push ${IMAGE_NAME}:${TAG}
 
 echo    ""
 echo    "> Fine"
-
