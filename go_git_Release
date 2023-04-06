@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./go_git_CredentialsReset
+
 export IMAGE_NAME=linhosan/em-ssl-decoder
 export PREFISSO_TAG=emssldec_v
 export FILTER_NAME=EM_SSL_Decoder
